@@ -1,0 +1,142 @@
+{
+    "modules-left": ["hyprland/workspaces", "tray"],
+    "modules-center": ["clock", "custom/keyboard"],
+    "modules-right": ["custom/updates","bluetooth", "network", "custom/temperature", "cpu", "memory", "custom/scratchpad-indicator", "pulseaudio", "custom/power"],
+
+    "hyprland/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+
+    "bluetooth": {
+        "format": "{status} ",
+        "format-on": "on ",
+        "format-connected": "{device_alias} 󰂰",
+        "format-disabled": "Off 󰂲",
+        "format-off": "Off 󰂲",
+        "format-no-controller": "no-controller 󰂲",
+        "tooltip": true,
+        "tooltip-format": "Bluetooth:  {status}",
+        "on-click": "blueman-manager"
+    },
+
+    "network": {
+        "format-wifi": "{essid} ({signalStrength}%) ",
+        "format-ethernet": "{ifname} ",
+        "format-disconnected": "Offline \uf127", 
+        "max-length": 50,
+        "on-click": "alacritty -e 'nmtui'",
+        "tooltip": true,
+        "tooltip-format": "<b>Network: </b>{ifname}{essid}",
+    },
+
+    "custom/temperature": {
+        "critical-threshold": 80,
+        "return-type": "json", 
+        "exec": "~/Scripts/cpu_temperature.sh",
+        "interval": 5,
+        "format": "{}°C ",
+        "format-high": "{}°C ",
+        "on-click": "psensor",
+        "tooltip": true,
+        "tooltip-format": "<b>CPU Temperature</b>\n{}°C"
+    },
+
+    "cpu": {
+        "format": "{usage}% ",
+        "interval": 5,
+        "on-click": "alacritty -e 'btop'",
+        "tooltip": true
+    },
+
+    "memory": {
+        "format": "{}% \uf1c0",
+        "interval": 5,
+        "on-click": "alacritty -e 'btop'"
+    },
+
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        }
+    },
+
+    "tray": {
+        "icon-size": 15,
+        "spacing": 10,
+        "reverse-direction": true
+    },
+
+    "clock": {
+        "format": "{:%H:%M}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format-alt": "{:%d/%m/%Y}",
+        "on-click-right": "flatpak run org.gnome.Calendar"
+    },
+
+    "pulseaudio": {
+        "format": "{volume}% {icon} ",
+        "format-bluetooth": "{volume}% {icon} {format_source}",
+        "format-bluetooth-muted": " {icon} {format_source}",
+        "format-muted": "0% {icon} ",
+        "format-source": "{volume}% ",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol",
+        "on-click-right": "helvum"
+    },
+
+    "custom/power": {
+        "format": " ",
+        "on-click": "wlogout",
+        "tooltip": true,	
+        "tooltip-format": "<b>Power Menu</b>"
+    },
+
+    "custom/scratchpad-indicator": {
+        "format-text": "{}hi",
+        "return-type": "json",
+        "interval": 3,
+        "exec": "~/.local/bin/scratchpad-indicator 2> /dev/null",
+        "exec-if": "exit 0",
+        "on-click": "hyprctl dispatch scratchpadeshow",
+        "on-click-right": "hyprctl dispatch movetoscratchpad"
+    },
+
+    "custom/keyboard": {
+        "name": "custom/keyboard-layout",
+        "exec": "~/Scripts/keyboard-layout.sh",
+        "on-click": "~/Scripts/swap-keyboard-layout.sh",
+        "format": "\uf11c   {}   ",
+        "interval": 2,
+        "tooltip": true,
+        "tooltip-format": "Keyboard Input"
+    },
+
+    "hyprland/workspaces": {
+        "format": "{name}",
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+        "on-scroll-down": "hyprctl dispatch workspace e-1",
+        "tooltip": true,
+        "tooltip-format": "Workspace: {name}"
+    },
+
+    "custom/updates": {
+        "exec": "~/Scripts/updates.sh",
+        "return-type": "json",
+        "interval": 3600,
+        "format": "{} 󰏔",
+        "tooltip": true,
+        "tooltip-format": "<b>Updates avaliable: </b> {}",
+        "on-click": "alacritty -e ~/Scripts/update-system.sh"
+    }
+}

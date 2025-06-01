@@ -1,0 +1,239 @@
+/*---- General Colors ----*/
+@define-color blue #7aa2f7;
+@define-color green #a6e3a1;
+@define-color yellow #e0af68;
+@define-color light-yellow #fab387;
+@define-color soft-yellow #f9e2af;
+@define-color cian #7dcfff;
+@define-color red #f92d2a;
+@define-color light-red #f7768e;
+@define-color pink #f38ba8;
+@define-color orange #d65d0e;
+@define-color purple #6666ff;
+@define-color light-purple #7889ef;
+
+/*---- Icons ----*/
+@define-color blue-icon @blue;
+@define-color green-icon @green;
+@define-color yellow-icon @yellow;
+@define-color light-yellow-icon @light-yellow;
+@define-color soft-yellow-icon @soft-yellow;
+@define-color cian-icon @cian;
+@define-color red-icon @red;
+@define-color light-red-icon @light-red;
+@define-color pink-icon @pink;
+@define-color orange-icon @orange;
+@define-color purple-icon @purple;
+@define-color light-purple-icon @light-purple;
+
+/*---- Modules Colors ----*/
+@define-color default_bg rgba(0, 43, 51, 0.5);
+
+/*---- Workspaces Colors ----*/
+@define-color work-button-hover rgba(0, 153, 153, 1);
+@define-color work-button-visible rgba(0, 43, 51, 0.85);
+@define-color work-button-urgente #cc3436;
+@define-color work-button-active rgba(0, 48, 239, 1);
+
+* {
+	border: none;
+	font-family: Font Awesome, Roboto, Arial, sans-serif;
+	font-size: 13px;
+	color: #ffffff;
+	border-radius: 20px;
+}
+
+window {
+	font-weight: bold;
+}
+
+window#waybar {
+	background: rgba(0, 0, 0, 0);
+}
+
+/*-----module groups----*/
+.modules-right {
+	background-color: @default_bg;
+	margin: 2px 0 0 0;
+}
+
+.modules-center {
+	background-color: @default_bg;
+	margin: 2px 2px 0 0;
+}
+
+.modules-left {
+	margin: 2px 0 0 5px;
+	background-color: @default_bg;
+}
+
+/*-----modules indv----*/
+#workspaces button {
+	padding: 1px 5px;
+	background-color: transparent;
+	color: #888888;
+	border: none;
+}
+
+#workspaces button:hover {
+	box-shadow: inherit;
+	background-color: @work-button-hover;
+	color: #888888;
+}
+
+#workspaces button.visible {
+	background-color: @work-button-visible;
+	color: #ffffff;
+}
+
+#workspaces button.urgent {
+	background: @work-button-urgent;
+	color: #ffffff;
+}
+
+#workspaces button.active {
+	background-color: @work-button-active;
+	color: #ffffff
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#custom-temperature,
+#network,
+#pulseaudio,
+#custom-media,
+#tray,
+#mode,
+#custom-power,
+#custom-menu,
+#custom-keyboard-layout,
+#custom-updates,
+#bluetooth,
+#idle_inhibitor {
+	padding: 0 10px;
+}
+
+#mode {
+	color: #cc3436;
+	font-weight: bold;
+}
+
+#custom-power {
+	background-color: rgba(0, 48, 239, 1)
+		/*rgba(0,119,179,0.6)*/
+	;
+	border-radius: 100px;
+	margin: 5px 5px;
+	padding: 1px 1px 1px 6px;
+}
+
+/*-----Indicators----*/
+#idle_inhibitor.activated {
+	color: @gree-icon;
+}
+
+#pulseaudio.muted {
+	color: @light-red-icon;
+}
+
+/*---- Battery ----*/
+#battery.charging {
+	color: #2dcc36;
+}
+
+#battery.warning:not(.charging) {
+	color: #e6e600;
+}
+
+#battery.critical:not(.charging) {
+	color: #cc3436;
+}
+
+#temperature.critical {
+	color: #cc3436;
+}
+
+/*-----Updates-----*/
+#custom-updates.zero {
+	color: @blue-icon;
+	background: transparent;
+}
+
+#custom-updates.low {
+	color: @green-icon;
+}
+
+#custom-updates.medium {
+	color: @soft-yellow-icon;
+}
+
+#custom-updates.high {
+	color: @light-red-icon;
+}
+
+#custom-updates.critical {
+	color: @red-icon;
+	animation: blink 1s infinite;
+}
+
+@keyframes blink {
+	50% {
+		opacity: 0.5;
+	}
+}
+
+/*----Temperature----*/
+#custom-temperature.low {
+	color: @cian-icon;
+}
+
+#custom-temperature.medium {
+	color: @yellow-icon;
+}
+
+#custom-temperature.high {
+	color: @red-icon;
+}
+
+/*---- Network ----*/
+#network {
+	color: @green-icon;
+}
+
+#network.disconnected {
+	color: @light-red-icon;
+}
+
+/*---- Bluetooth ----*/
+#bluetooth {
+	color: @light-purple-icon;
+}
+
+#bluetooth.connected {
+	color: @purple-icon;
+}
+
+/*---- CPU ----*/
+#cpu {
+	color: @pink-icon;
+}
+
+/*---- Memory ----*/
+#memory {
+	color: @soft-yellow-icon;
+}
+
+/*---- Audio ----*/
+#pulseaudio {
+	color: @yellow-icon;
+}
+
+/*-----Colors----*/
+/*
+ *rgba(0,85,102,1),#005566 --> Indigo(dye)
+ *rgba(0,43,51,1),#002B33 --> Dark Green 
+ *rgba(0,153,153,1),#009999 --> Persian Green 
+ *rgba(0, 48, 239, 1) --> #0030efff workspace focus
+ */
