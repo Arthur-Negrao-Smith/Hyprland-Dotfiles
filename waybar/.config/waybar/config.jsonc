@@ -137,6 +137,6 @@
         "format": "{} 󰏔",
         "tooltip": true,
         "tooltip-format": "<b>Updates avaliable: </b> {}",
-        "on-click": "alacritty -e ~/Scripts/update-system.sh"
+        "on-click": "alacritty -e ~/.config/scripts/update-system.sh"
     }
 }
