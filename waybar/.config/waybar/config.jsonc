@@ -32,7 +32,7 @@
     "custom/temperature": {
         "critical-threshold": 80,
         "return-type": "json", 
-        "exec": "~/Scripts/cpu_temperature.sh",
+        "exec": "~/.config/scripts/cpu_temperature.sh",
         "interval": 5,
         "format": "{}°C ",
         "format-high": "{}°C ",
@@ -114,8 +114,8 @@
 
     "custom/keyboard": {
         "name": "custom/keyboard-layout",
-        "exec": "~/Scripts/keyboard-layout.sh",
-        "on-click": "~/Scripts/swap-keyboard-layout.sh",
+        "exec": "~/.config/scripts/keyboard-layout.sh",
+        "on-click": "~/.config/scripts/swap-keyboard-layout.sh",
         "format": "\uf11c   {}   ",
         "interval": 2,
         "tooltip": true,
@@ -131,7 +131,7 @@
     },
 
     "custom/updates": {
-        "exec": "~/Scripts/updates.sh",
+        "exec": "~/.config/scripts/updates.sh",
         "return-type": "json",
         "interval": 3600,
         "format": "{} 󰏔",
