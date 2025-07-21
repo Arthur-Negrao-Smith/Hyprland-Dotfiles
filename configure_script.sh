@@ -7,6 +7,8 @@ ZSH_BIN="/bin/zsh"
 SCRIPT_FILE="$(basename "$0")"
 SCRIPT_PATH="$(realpath "$0")"
 DRY_RUN=false
+NEOVIM_URL_GIT="https://github.com/Arthur-Negrao-Smith/My-nvim-config.git"
+NEOVIM_CONFIG_PATH="$XDG_CONFIG_HOME/nvim"
 
 CONFIG_DIRS=(
   "dunst"
@@ -27,6 +29,7 @@ PACMAN_PACKAGES=(
   "dunst"
   "stow"
   "zsh"
+  "nvim"
 )
 
 # yay packages to install
@@ -94,6 +97,15 @@ install_packages() {
   run_cmd yay -S --needed --noconfirm "${YAY_PACKAGES[@]}"
 }
 
+backup_if_exists() {
+    target="$1"
+
+    if [ -e "$target" ] && [ ! -L "$target" ]; then
+      warn "$target already exists. Creating backup as $target.bak"
+      run_cmd mv "$target" "$target.bak"
+    fi
+}
+
 # making backups to all existent configs files
 backup_existing_configs() {
   log "Checking for conflicts before using stow..."
@@ -105,10 +117,8 @@ backup_existing_configs() {
       target="$XDG_CONFIG_HOME/$dir"
     fi
 
-    if [ -e "$target" ] && [ ! -L "$target" ]; then
-      warn "$target already exists. Creating backup as $target.bak"
-      run_cmd mv "$target" "$target.bak"
-    fi
+    backup_if_exists "$target"
+
   done
 }
 
@@ -128,21 +138,35 @@ change_shell_to_zsh() {
   source "$ZSH_PATH"
 }
 
+# add neovim config
+change_config_neovim() {
+  backup_if_exists "$NEOVIM_CONFIG_PATH"
+
+  log "Cloning the neovim config repository..."
+  run_cmd git clone "$NEOVIM_URL_GIT" "$NEOVIM_CONFIG_PATH"
+}
+
 # changing the configure script name
 change_config_script_name() {
-  log "Renaming the configuration script from $SCRIPT_FILE to $SCRIPT_FILE.used ..."
+  log "Renaming the configuration script from '$SCRIPT_FILE' to '$SCRIPT_FILE.used'..."
   run_cmd mv $SCRIPT_PATH "$SCRIPT_PATH.used"
 }
 
 # run all functions
 main() {
   create_config_dirs
+
   update_system
   install_packages
+
   backup_existing_configs
   stow_configs
+
   change_shell_to_zsh
+  change_config_neovim
+
   change_config_script_name
+
   success "Installation completed successfully!"
   exit 0
 }
@@ -156,7 +180,7 @@ Usage: $SCRIPT_FILE [OPTION]
 
 Options:
   --run             Run the script in real mode (all changes are made)
-  --dry-run         Run the script in simulation mode (no changes made)
+  -d, --dry-run     Run the script in simulation mode (no changes made)
   -h, --help        Show this help message and exit
 
 Returns:
@@ -178,7 +202,7 @@ parse_args() {
 
   # check the argument
   case "$1" in
-    --dry-run)
+    -d|--dry-run)
       DRY_RUN=true
       warn "Dry-run mode enabled. No changes will be made."
       main
