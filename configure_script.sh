@@ -2,13 +2,24 @@
 
 # ===== CONFIGURATIONS ===== #
 XDG_CONFIG_HOME="$HOME/.config"
+
+# zsh constants
 ZSH_PATH="$HOME/.zshrc"
 ZSH_BIN="/bin/zsh"
+
+# script constants
 SCRIPT_FILE="$(basename "$0")"
 SCRIPT_PATH="$(realpath "$0")"
 DRY_RUN=false
+
+# git constants
 NEOVIM_URL_GIT="https://github.com/Arthur-Negrao-Smith/My-nvim-config.git"
 NEOVIM_CONFIG_PATH="$XDG_CONFIG_HOME/nvim"
+
+# sddm constants
+SDDM_CONFIG_PATH="/etc/sddm.conf.d"
+SDDM_THEMES_PATH="/usr/share/sddm/themes"
+SDDM_THEME_TAR_FILE="sugar-candy.tar.gz"
 
 CONFIG_DIRS=(
   "dunst"
@@ -30,6 +41,11 @@ PACMAN_PACKAGES=(
   "stow"
   "zsh"
   "nvim"
+  "sddm"
+  "tar"
+  "qt5‑graphicaleffects"
+  "qt5‑quickcontrols2"
+  "qt5‑svg"
 )
 
 # yay packages to install
@@ -135,7 +151,7 @@ stow_configs() {
 change_shell_to_zsh() {
   log "Changing the current shell..."
   run_cmd chsh -s "$ZSH_BIN"
-  source "$ZSH_PATH"
+  run_cmd source "$ZSH_PATH"
 }
 
 # add neovim config
@@ -152,6 +168,21 @@ change_config_script_name() {
   run_cmd mv $SCRIPT_PATH "$SCRIPT_PATH.used"
 }
 
+configure_sddm() {
+  log "Configuring the sddm to login in system..."
+  log "Creating directorys: '$SDDM_CONFIG_PATH' and '$SDDM_THEMES_PATH'..."
+  run_cmd mkdir -p "$SDDM_CONFIG_PATH"
+  run_cmd mkdir -p "$SDDM_THEMES_PATH"
+
+  log "Writing in file: $SDDM_CONFIG_PATH/theme.conf"
+  run_cmd echo -e "
+[Theme]
+Current=sugar-candy" > "$SDDM_CONFIG_PATH/theme.conf"
+
+  log "Extracting files from '$SDDM_THEME_TAR_FILE' to '$SDDM_THEMES_PATH'..."
+  run_cmd sudo tar -xzvf "$SDDM_THEME_TAR_FILE" -C "$SDDM_THEMES_PATH"
+}
+
 # run all functions
 main() {
   create_config_dirs
@@ -164,6 +195,8 @@ main() {
 
   change_shell_to_zsh
   change_config_neovim
+
+  configure_sddm
 
   change_config_script_name
 
