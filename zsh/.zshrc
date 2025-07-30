@@ -18,6 +18,10 @@ export XDG_CURRENT_DESKTOP=Hyprland
 export XDG_SESSION_TYPE=wayland
 export GTK_USE_PORTAL=1
 
+# Export password manager
+export PASSWORD_STORE_DIR="$HOME/.secrets"
+export GCM_CREDENTIAL_STORE=gpg
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
