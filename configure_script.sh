@@ -21,6 +21,9 @@ SDDM_CONFIG_PATH="/etc/sddm.conf.d"
 SDDM_THEMES_PATH="/usr/share/sddm/themes"
 SDDM_THEME_TAR_FILE="sugar-candy.tar.gz"
 
+# hyprpaper constants
+WALLPAPER_DIR_PATH="$HOME/Images/Wallpapers"
+
 CONFIG_DIRS=(
   "dunst"
   "alacritty"
@@ -186,6 +189,11 @@ Current=sugar-candy" > "$SDDM_CONFIG_PATH/theme.conf"
   run_cmd systemctl enable sddm.service
 }
 
+configure_hyprpaper() {
+  log "Creating wallpaper directory '$WALLPAPER_DIR_PATH'"
+  run_cmd mkdir -p "$WALLPAPER_DIR_PATH"
+}
+
 # run all functions
 main() {
   create_config_dirs
@@ -200,6 +208,8 @@ main() {
   change_config_neovim
 
   configure_sddm
+
+  configure_hyprpaper
 
   change_config_script_name
 
