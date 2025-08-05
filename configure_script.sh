@@ -181,6 +181,9 @@ Current=sugar-candy" > "$SDDM_CONFIG_PATH/theme.conf"
 
   log "Extracting files from '$SDDM_THEME_TAR_FILE' to '$SDDM_THEMES_PATH'..."
   run_cmd sudo tar -xzvf "$SDDM_THEME_TAR_FILE" -C "$SDDM_THEMES_PATH"
+
+  log "Initializing the sddm service"
+  run_cmd systemctl enable sddm.service
 }
 
 # run all functions
