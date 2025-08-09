@@ -1,0 +1,16 @@
+[mgr]
+show_hidden = true
+sort_by = "alphabetical"
+show_symlink = true
+
+[open]
+prepend_rules = [
+  { name = "*", use = "edit" }
+]
+
+[opener]
+edit = [
+  { run = 'nvim "$@"', block = true, for = "linux"},
+  { run = 'nvim "$@"', block = true, for = "unix"},
+  { run = "nvim %*", block = true, for = "windows"}
+]

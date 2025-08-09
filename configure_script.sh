@@ -33,6 +33,7 @@ CONFIG_DIRS=(
   "swayidle"
   "waybar"
   "wlogout"
+  "yazi"
 )
 
 # pacman packages to install
@@ -45,6 +46,7 @@ PACMAN_PACKAGES=(
   "zsh"
   "nvim"
   "sddm"
+  "yazi"
   "tar"
   "qt5‑graphicaleffects"
   "qt5‑quickcontrols2"
