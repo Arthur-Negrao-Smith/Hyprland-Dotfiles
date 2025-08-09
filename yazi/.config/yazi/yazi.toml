@@ -10,7 +10,7 @@ prepend_rules = [
 
 [opener]
 edit = [
-  { run = 'nvim "$@"', block = true, for = "linux"},
-  { run = 'nvim "$@"', block = true, for = "unix"},
-  { run = "nvim %*", block = true, for = "windows"}
+  { run = '$EDITOR "$@"', block = true, for = "linux"},
+  { run = '$EDITOR "$@"', block = true, for = "unix"},
+  { run = "%EDITOR% %*", block = true, for = "windows"}
 ]

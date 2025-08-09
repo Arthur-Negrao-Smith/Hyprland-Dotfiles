@@ -12,6 +12,8 @@ fi
 export ZSH="$HOME/.oh-my-zsh"
 export XDG_CONFIG_HOME="$HOME/.config"
 
+# Define the editor
+export EDITOR=nvim
 
 # Export Hyprland and Wayland
 export XDG_CURRENT_DESKTOP=Hyprland
