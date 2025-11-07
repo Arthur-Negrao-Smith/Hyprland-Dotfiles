@@ -1,0 +1,22 @@
+pkgname='eww'
+pkgver=0.6.0
+pkgrel=1
+pkgdesc="App to create wayland widgets"
+arch=('x86_64')
+url="https://github.com/elkowar/eww"
+license=("MIT")
+depends=('gtk3' 'glib2')
+makedepends=('git' 'rust')
+source=("git+https://github.com/elkowar/eww")
+sha256sums=('SKIP')
+
+build() {
+  cd eww
+  cargo build --release --no-default-features --features=wayland
+}
+
+package() {
+  cd eww
+  install -Dm755 target/release/eww "$pkgdir/usr/bin/eww"
+}
+
