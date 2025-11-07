@@ -139,7 +139,6 @@ alias restart-hypr="~/Scripts/restart_hypr.sh"
 alias gimp="flatpak run org.gimp.GIMP"
 alias gnome-calendar="flatpak run org.gnome.Calendar"
 alias snvim="sudo -E nvim"
-alias eww="~/eww/target/release/eww"
 
 # My keybinds
 bindkey '^ ' autosuggest-accept
