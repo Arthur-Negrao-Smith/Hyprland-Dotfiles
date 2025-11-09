@@ -17,5 +17,5 @@ case $ACTION in
     ;;
 esac
 
-brightness=$(ddcutil getvcp 10 | awk -F '=' '{print $2}' | awk '{print $1}' | tr -d ' ' | tr -d ',')
+brightness=$(ddcutil -b $MONITOR_1 getvcp 10 | awk -F '[=,]' '{print $2}' | tr -d ' ')
 notify-send -a "System" "The monitor brightness is $brightness%"
