@@ -6,7 +6,9 @@ $secondary-neon: #ff00ff;
 /* Magenta */
 $text-color: #e0e0e0;
 $font-family: "JetBrains Mono Nerd Font";
-$slider-background: #89b4fa;
+$slider-highlight-background: #89b4fa;
+$slider-trough-background: #080809;
+$hover-color: #f0f0f0;
 
 * {
   all: unset;
@@ -51,7 +53,7 @@ $slider-background: #89b4fa;
 
 .slider-panel trough {
   all: unset;
-  background-color: #080809;
+  background-color: $slider-trough-background;
   min-width: 40px;
   min-height: 150px;
   border-radius: 50px;
@@ -68,6 +70,47 @@ $slider-background: #89b4fa;
 
 .slider-panel trough slider {
   all: unset;
+}
+
+/* ---- Panel Buttons ---- */
+.panel-buttons-box {
+  all: unset;
+  background-color: transparent;
+}
+
+.panel-button {
+
+  min-height: 30px;
+  min-width: 100px;
+
+  font-size: 16px;
+
+  background-color: $slider-trough-background;
+
+  color: $text-color;
+  text-shadow: none;
+
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 16px;
+  padding-right: 16px;
+
+  box-shadow: inset 0 0 5px rgba($primary-neon, 0.4);
+  border-radius: 90px;
+  transition: all 0.15s ease-out;
+}
+
+.panel-buttons-box button:hover {
+  background-color: $primary-neon;
+}
+
+.network-button.wifi,
+.network-button.ethernet,
+.bluetooth-button.on,
+.bluetooth-button.connected {
+  background-color: $secondary-neon;
+  color: $text-color;
+  text-shadow: 0 0 5px rgba($primary-neon, 0.7);
 }
 
 /* ---- Music Player ---- */
@@ -165,12 +208,14 @@ $slider-background: #89b4fa;
 }
 
 .progress-bar slider {
-  min-width: 11px;
-  min-height: 11px;
+  min-width: 15px;
+  min-height: 15px;
   background-color: #000000;
 
   box-shadow: 0 0 5px $secondary-neon;
   border: 2px solid $primary-neon;
+
+  margin: -5px 0;
 
   border-radius: 50%;
 

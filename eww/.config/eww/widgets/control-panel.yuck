@@ -119,6 +119,51 @@
   )
 )
 
+;; ---- Buttons ----
+(defpoll network_state :interval "1s"
+  "./scripts/get_network.sh")
+
+(defpoll bluetooth_state :interval "5s"
+  "./scripts/get_bluetooth.sh")
+
+(defwidget panel-buttons []
+  (box
+    :class "panel-buttons-box"
+    :orientation "h"
+    :space-evenly true
+    :spacing 15
+    :valign "center"
+
+    ;; network button
+    (button
+      :class "panel-button network-button ${network_state}"
+      :tooltip "Network: ${network_state}"
+      :onclick "nm-connetion-editor"
+      (label
+        :class "panel-button-icon"
+        :text {network_state == "wifi" ? "  Wi-fi " :
+                network_state == "ethernet" ? "󰈁 Ethernet" :
+                network_state == "offline" ? "  No Signal" : "󰈂 Disconnect"}
+      )
+    )
+
+    ;; bluetooth button
+    (button
+      :class "panel-button bluetooth-button ${bluetooth_state}"
+      :tooltip "Bluetooth: ${bluetooth_state}"
+      :onclick {bluetooth_state == "on" || bluetooth_state == "connected" ? "bluetoothctl power off" : "bluetoothctl power on"}
+      (label
+        :class "panel-button-icon"
+        :text {bluetooth_state == "connected" ? "󰂱 Connected" :
+               bluetooth_state == "on" ? "󰂳 On" :
+               bluetooth_state == "off" ? "󰂯 Off" : "󰂲 Disabled"}
+      )
+    )
+  )
+)
+
+
+
 ;; ------ Window ------
 (defwindow control-panel
   :monitor 0
@@ -133,8 +178,13 @@
   :focusable false
 
   (box :orientation "v" :space-evenly false :spacing 15 :class "all-panel-container"
-    (box :orientation "h" :space-evenly true :spacing 15 :class "control-panel-container"
+    (box
+      :orientation "h"
+      :space-evenly false
+      :spacing 15
+      :class "control-panel-container"
       (volume-slider)
+      (panel-buttons)
       (brightness-slider)
     )
     (music-widget)
