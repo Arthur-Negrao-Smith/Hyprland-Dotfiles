@@ -1,18 +1,21 @@
+;; ------ Volume ------
+
 ;; Global volume variable
 (defpoll volume :interval "1s" 
   "pactl get-sink-volume @DEFAULT_SINK@ | awk '/Volume:/ {print $5}' | tr -d '%'")
 
 ;; Global variable to muted
 ;; 'awk' convert 'yes' -> "true" and 'no' -> "false"
-(defpoll is-muted :interval "1s"
+(defpoll is_muted :interval "1s"
   "if [ \"$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{print $2}')\" = 'yes' ]; then echo 'true'; else echo 'false'; fi")
 
-;; Volume Slider
+;; Volume variable
 (defwidget volume-slider []
-  (overlay :class "control-panel-box"
+  (overlay :class "slider-panel-box"
 
     ;; slider
     (scale :value volume
+      :class "slider-panel"
       :orientation "v"
       :flipped true
       :min 0
@@ -23,23 +26,23 @@
     (eventbox :onclick "pactl set-sink-mute @DEFAULT_SINK@ toggle"
       :valign "end"
       :halign "center"
-      (label :text {is-muted == "true" ? "󰖁" : "󰕾"}
-             :class "icon-volume")
+      (label :text {is_muted == "true" ? "󰖁" : "󰕾"}
+             :class "slider-icon")
     )
   )
 )
 
 
-;; Global brightness variable
+;; ------ Brightness -------
 (defpoll brightness :interval "1s"
   "./scripts/get_brightness.sh")
 
 (defwidget brightness-slider []
-  (overlay :class "control-panel-box"
+  (overlay :class "slider-panel-box"
 
     ;; slider
     (scale :value brightness
-      :class "brightness-scale"
+      :class "slider-panel"
       :orientation "v"
       :flipped true
       :min 0
@@ -49,28 +52,91 @@
       :halign "center"
     )
 
-      (label :text "󰖙" :class "icon-brightness"
-        :valign "end" 
+      (label :text "󰖙" :class "slider-icon"
+        :valign "end"
         :halign "center"
+)
+  )
+)
+
+;; ------ Music Player ------
+
+;; litener to keep the title
+(deflisten song_title    :initial "No Music Playing"
+"playerctl metadata --format '{{title}}' --follow || echo 'No Music Playing'")
+
+;; listener to keep artist name
+(deflisten song_artist   :initial "Unknown Artist"
+"playerctl metadata --format '{{artist}}' --follow || echo 'Unknown Artist'")
+
+;; listener to keep player status
+(deflisten player_status :initial "Stopped"
+"playerctl metadata --format '{{status}}' --follow || echo 'Stopped'")
+
+;; variable to keep the music length
+(defpoll song_length_s   :interval "2s"
+"playerctl metadata mpris:length | awk '{print $1 / 1000000}' || echo 1")
+
+;; variable to keep the music position
+(defpoll song_position_s    :interval "1s" "playerctl position || echo 0")
+
+;; variable to keep the formatted music position
+(defpoll formatted_position :interval "1s" "playerctl position -f '{{duration(position)}}' || echo '0:00'")
+
+;; variable to keep cover art
+(defpoll cover_art_path :interval "1s" "./scripts/get_cover.sh")
+
+;; listener to keep canva
+(deflisten cava :initial "" "./scripts/cava.sh")
+
+;; Music player widget
+(defwidget music-widget []
+  (box :class "music-widget" :orientation "h" :space-evenly false
+    (box :class "cover-art" :style "background-image: url('${cover_art_path}');")
+    (box :class "music-info" :orientation "v" :space-evenly false
+      (label :class "song-title" :text song_title :limit-width 25)
+      (label :class "artist" :text song_artist :limit-width 25)
+
+      (box :class "controls" :orientation "h"
+        (button :onclick "playerctl previous" "󰒮")
+        (button :onclick "playerctl play-pause" {player_status == "Playing" ? "󰏤" : "󰐊"})
+        (button :onclick "playerctl next" "󰒭")
+      )
+
+      (label :class "position" :text formatted_position)
+
+      (
+        scale :class "progress-bar" 
+              :min 0
+              :max song_length_s 
+              :value song_position_s 
+              :onchange "playerctl position {}"
+      )
+
+      (label :class "cava-visualizer" :text cava)
+
     )
   )
 )
 
-
-;; Window
+;; ------ Window ------
 (defwindow control-panel
   :monitor 0
   :layer "top"
-  :geometry (geometry :x "0%"
-                      :y "35px"
-                      :anchor "top center"
-                      :width "150px"
-                      :height "250px")
+  :geometry (geometry :x "15px"
+                      :y "25px"
+                      :anchor "top right"
+                      :width "440px"
+                      :height "330px")
   :stacking "fg"
   :exclusive false
   :focusable false
-  (box :orientation "h" :space-evenly true :spacing 15 :class "control-panel-container"
-    (volume-slider)
-    (brightness-slider)
+
+  (box :orientation "v" :space-evenly false :spacing 15 :class "all-panel-container"
+    (box :orientation "h" :space-evenly true :spacing 15 :class "control-panel-container"
+      (volume-slider)
+      (brightness-slider)
+    )
+    (music-widget)
   )
 )

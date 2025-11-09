@@ -1,17 +1,36 @@
+$all-panel-bg: #1e1e2e;
+$bg-color: rgba(10, 5, 30, 0.85);
+$primary-neon: #00ffff;
+/* Cyan    */
+$secondary-neon: #ff00ff;
+/* Magenta */
+$text-color: #e0e0e0;
+$font-family: "JetBrains Mono Nerd Font";
+$slider-background: #89b4fa;
+
 * {
   all: unset;
   font-family: "CaskaydiaCove Nerd Font";
 }
 
+/* ---- All Widget ---- */
+.all-panel-container {
+  background-color: $bg-color;
+  border-radius: 16px;
+  padding: 10px;
+  box-shadow: inset 0 0 5px rgba($primary-neon, 0.4);
+}
+
+/* ---- Control Panel ---- */
 .control-panel-container {
-  background-color: #1e1e2e;
+  background-color: transparent;
   color: #cdd6f4;
   border: 1px;
   border-radius: 16px;
   padding: 15px;
 }
 
-.control-panel-box {
+.slider-panel-box {
   background-color: transparent;
   color: #cdd6f4;
   border: none;
@@ -19,35 +38,153 @@
   padding: 0px;
 }
 
-.icon-volume,
-.icon-brightness {
+.slider-icon {
   font-size: 24px;
   padding-bottom: 15px;
 }
 
-scale {
+.slider-panel {
   all: unset;
   min-width: 40px;
   min-height: 150px;
 }
 
-scale trough {
+.slider-panel trough {
   all: unset;
-  background-color: #1a1a2a;
+  background-color: #080809;
   min-width: 40px;
   min-height: 150px;
   border-radius: 50px;
-  border: 0px solid #89b4fa;
+  box-shadow: inset 0 0 5px rgba($primary-neon, 0.4);
 }
 
-scale highlight {
+.slider-panel highlight {
   all: unset;
-  background-color: #89b4fa;
+  background-image: linear-gradient(to right, $primary-neon, $secondary-neon);
   min-width: 38px;
-  border-radius: 50px;
-  padding-bottom: 40px;
+  border-radius: 35px;
+  padding-bottom: 50px;
 }
 
-scale trough slider {
+.slider-panel trough slider {
   all: unset;
+}
+
+/* ---- Music Player ---- */
+
+.music-widget {
+  background-color: transparent;
+  border-radius: 10px;
+  padding: 10px;
+  color: $text-color;
+  font-family: $font-family;
+  border: 0.5px solid $primary-neon;
+  box-shadow: 0 0 12px rgba($primary-neon, 0.3);
+}
+
+.cover-art {
+  background-size: cover;
+  background-position: center;
+  min-width: 155px;
+  min-height: 125px;
+  border-radius: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding-right: 20px;
+  padding-bottom: 50px;
+  border: 1px solid rgba($primary-neon, 0.3);
+
+}
+
+.music-info {
+  padding: 5px 0;
+  margin-right: 10px;
+}
+
+.song-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: $secondary-neon;
+  text-shadow: 0 0 1px rgba($secondary-neon, 0.3);
+  margin-bottom: 5px;
+}
+
+.artist {
+  font-size: 14px;
+  opacity: 0.70;
+  color: $primary-neon;
+  margin-bottom: 5px;
+}
+
+.controls {
+  margin: 8px 0;
+  font-size: 22px;
+}
+
+.controls button {
+  background: none;
+  border: none;
+  color: $secondary-neon;
+  padding: 0 10px;
+  transition: all 0.2s ease-in-out;
+  text-shadow: 0 2 6px rgba($secondary-neon, 0.3);
+}
+
+.controls button:hover {
+  color: $primary-neon;
+  text-shadow: 0 0 10px rgba($secondary-neon, 1);
+}
+
+.position {
+  font-size: 12px;
+  opacity: 0.75;
+  color: $text-color;
+  margin-bottom: 10px;
+}
+
+.progress-bar {
+  margin-left: 5;
+  padding: 0;
+  border: none;
+}
+
+.progress-bar trough {
+  background-color: rgba($primary-neon, 0.1);
+  border-radius: 10px;
+  min-height: 12px;
+  min-width: 180px;
+  border: 1px solid rgba($primary-neon, 0.3);
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.4);
+}
+
+.progress-bar highlight {
+  background-image: linear-gradient(to right, $primary-neon, $secondary-neon);
+  border-radius: 10px;
+  box-shadow: 0 0 3px $primary-neon;
+}
+
+.progress-bar slider {
+  min-width: 11px;
+  min-height: 11px;
+  background-color: #000000;
+
+  box-shadow: 0 0 5px $secondary-neon;
+  border: 2px solid $primary-neon;
+
+  border-radius: 50%;
+
+  outline: 1px solid rgba($secondary-neon, 0.6);
+  outline-offset: -2px;
+}
+
+.cava-visualizer {
+  margin-left: 5;
+  font-family: "monospace";
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: $primary-neon;
+  text-shadow: 0 0 6px rgba($primary-neon, 0.5);
+  margin-top: 10px;
+  text-shadow: 0 0 3px $primary-neon;
 }

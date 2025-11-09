@@ -91,7 +91,7 @@
             "car": "",
             "default": ["", "", ""]
         },
-        "on-click": "pavucontrol",
+        "on-click": "eww open --toggle control-panel --screen $(hyprctl activewindow -j | jq '.monitor')",
         "on-click-right": "helvum"
     },
 
