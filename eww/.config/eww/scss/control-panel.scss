@@ -1,0 +1,53 @@
+* {
+  all: unset;
+  font-family: "CaskaydiaCove Nerd Font";
+}
+
+.control-panel-container {
+  background-color: #1e1e2e;
+  color: #cdd6f4;
+  border: 1px;
+  border-radius: 16px;
+  padding: 15px;
+}
+
+.control-panel-box {
+  background-color: transparent;
+  color: #cdd6f4;
+  border: none;
+  border-radius: 0;
+  padding: 0px;
+}
+
+.icon-volume,
+.icon-brightness {
+  font-size: 24px;
+  padding-bottom: 15px;
+}
+
+scale {
+  all: unset;
+  min-width: 40px;
+  min-height: 150px;
+}
+
+scale trough {
+  all: unset;
+  background-color: #1a1a2a;
+  min-width: 40px;
+  min-height: 150px;
+  border-radius: 50px;
+  border: 0px solid #89b4fa;
+}
+
+scale highlight {
+  all: unset;
+  background-color: #89b4fa;
+  min-width: 38px;
+  border-radius: 50px;
+  padding-bottom: 40px;
+}
+
+scale trough slider {
+  all: unset;
+}

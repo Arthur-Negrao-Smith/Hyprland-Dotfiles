@@ -1,0 +1,76 @@
+;; Global volume variable
+(defpoll volume :interval "1s" 
+  "pactl get-sink-volume @DEFAULT_SINK@ | awk '/Volume:/ {print $5}' | tr -d '%'")
+
+;; Global variable to muted
+;; 'awk' convert 'yes' -> "true" and 'no' -> "false"
+(defpoll is-muted :interval "1s"
+  "if [ \"$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{print $2}')\" = 'yes' ]; then echo 'true'; else echo 'false'; fi")
+
+;; Volume Slider
+(defwidget volume-slider []
+  (overlay :class "control-panel-box"
+
+    ;; slider
+    (scale :value volume
+      :orientation "v"
+      :flipped true
+      :min 0
+      :max 101
+      :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%"
+      :tooltip "Volume: ${volume}%")
+
+    (eventbox :onclick "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+      :valign "end"
+      :halign "center"
+      (label :text {is-muted == "true" ? "󰖁" : "󰕾"}
+             :class "icon-volume")
+    )
+  )
+)
+
+
+;; Global brightness variable
+(defpoll brightness :interval "1s"
+  "./scripts/get_brightness.sh")
+
+(defwidget brightness-slider []
+  (overlay :class "control-panel-box"
+
+    ;; slider
+    (scale :value brightness
+      :class "brightness-scale"
+      :orientation "v"
+      :flipped true
+      :min 0
+      :max 101
+      :onchange "./scripts/brightness_control.sh {} &"
+      :tooltip "Brightness: ${brightness}%"
+      :halign "center"
+    )
+
+      (label :text "󰖙" :class "icon-brightness"
+        :valign "end" 
+        :halign "center"
+    )
+  )
+)
+
+
+;; Window
+(defwindow control-panel
+  :monitor 0
+  :layer "top"
+  :geometry (geometry :x "0%"
+                      :y "35px"
+                      :anchor "top center"
+                      :width "150px"
+                      :height "250px")
+  :stacking "fg"
+  :exclusive false
+  :focusable false
+  (box :orientation "h" :space-evenly true :spacing 15 :class "control-panel-container"
+    (volume-slider)
+    (brightness-slider)
+  )
+)
