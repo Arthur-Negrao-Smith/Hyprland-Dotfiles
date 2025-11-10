@@ -1,7 +1,6 @@
 #!/bin/bash
 
-WIDGET_DIR=$(dirname "$0")
-DEFAULT_COVER="$WIDGET_DIR/assets/DEFAULTImage.jpeg"
+DEFAULT_COVER="assets/DEFAULTImage.jpeg"
 CACHE_DIR="/tmp/music-widget"
 mkdir -p "$CACHE_DIR"
 
