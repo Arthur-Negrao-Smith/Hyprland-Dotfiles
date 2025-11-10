@@ -1,14 +1,14 @@
-$all-panel-bg: #1e1e2e;
-$bg-color: rgba(10, 5, 30, 0.85);
-$primary-neon: #00ffff;
-/* Cyan    */
-$secondary-neon: #ff00ff;
-/* Magenta */
-$text-color: #e0e0e0;
-$font-family: "JetBrains Mono Nerd Font";
+@import "wal.scss";
+
+$bg-color: rgba($background, 0.85);
+$primary-neon: $color6;
+$secondary-neon: $color5;
+$text-color: $foreground;
 $slider-highlight-background: #89b4fa;
 $slider-trough-background: #080809;
-$hover-color: #f0f0f0;
+$hover-color: $color7;
+
+$font-family: "JetBrains Mono Nerd Font";
 
 * {
   all: unset;
@@ -20,13 +20,13 @@ $hover-color: #f0f0f0;
   background-color: $bg-color;
   border-radius: 16px;
   padding: 10px;
-  box-shadow: inset 0 0 5px rgba($primary-neon, 0.4);
+  box-shadow: inset 0 0 5px rgba($color4, 0.4);
 }
 
 /* ---- Control Panel ---- */
 .control-panel-container {
   background-color: transparent;
-  color: #cdd6f4;
+  color: $foreground;
   border: 1px;
   border-radius: 16px;
   padding: 15px;
@@ -34,7 +34,7 @@ $hover-color: #f0f0f0;
 
 .slider-panel-box {
   background-color: transparent;
-  color: #cdd6f4;
+  color: $foreground;
   border: none;
   border-radius: 0;
   padding: 0px;
@@ -53,16 +53,16 @@ $hover-color: #f0f0f0;
 
 .slider-panel trough {
   all: unset;
-  background-color: $slider-trough-background;
+  background-color: $color0;
   min-width: 40px;
   min-height: 150px;
   border-radius: 50px;
-  box-shadow: inset 0 0 5px rgba($primary-neon, 0.4);
+  box-shadow: inset 0 0 5px rgba($color2, 0.4);
 }
 
 .slider-panel highlight {
   all: unset;
-  background-image: linear-gradient(to right, $primary-neon, $secondary-neon);
+  background-image: linear-gradient(to right, $color3, $color2);
   min-width: 38px;
   border-radius: 35px;
   padding-bottom: 50px;
@@ -85,9 +85,9 @@ $hover-color: #f0f0f0;
 
   font-size: 16px;
 
-  background-color: $slider-trough-background;
+  background-color: $color8;
 
-  color: $text-color;
+  color: $foreground;
   text-shadow: none;
 
   padding-top: 4px;
@@ -95,13 +95,14 @@ $hover-color: #f0f0f0;
   padding-left: 16px;
   padding-right: 16px;
 
-  box-shadow: inset 0 0 5px rgba($primary-neon, 0.4);
+  box-shadow: inset 0 0 5px rgba($color2, 0.4);
   border-radius: 90px;
   transition: all 0.15s ease-out;
 }
 
 .panel-buttons-box button:hover {
-  background-color: $primary-neon;
+  background-color: $foreground;
+  color: $background;
 }
 
 .network-button.wifi,
@@ -111,7 +112,7 @@ $hover-color: #f0f0f0;
 .nightlight-button.on,
 .dnd-button.on,
 .swayidle-button.on {
-  background-color: $secondary-neon;
+  background-color: rgba($secondary-neon, 0.8);
   color: $text-color;
   text-shadow: 0 0 5px rgba($primary-neon, 0.7);
 }
@@ -124,7 +125,7 @@ $hover-color: #f0f0f0;
   padding: 10px;
   color: $text-color;
   font-family: $font-family;
-  border: 0.5px solid $primary-neon;
+  border: 0.5px solid $color6;
   box-shadow: 0 0 12px rgba($primary-neon, 0.3);
 }
 
@@ -171,6 +172,7 @@ $hover-color: #f0f0f0;
 .controls button {
   background: none;
   border: none;
+  border-radius: 8px;
   color: $secondary-neon;
   padding: 0 10px;
   transition: all 0.2s ease-in-out;
@@ -179,7 +181,7 @@ $hover-color: #f0f0f0;
 
 .controls button:hover {
   color: $primary-neon;
-  text-shadow: 0 0 10px rgba($secondary-neon, 1);
+  background-color: rgba($primary_neon, 0.2);
 }
 
 .position {

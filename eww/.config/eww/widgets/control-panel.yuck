@@ -79,11 +79,13 @@
 
 ;; variable to keep the music position
 (defpoll song_position_s :interval "1s"
-"if [ \"$(playerctl status 2>/dev/null)\" = 'Playing' ]; then playerctl position; else eww get song_position_s; fi || echo 0")
+  "playerctl position || echo 0")
+;"if [ \"$(playerctl status 2>/dev/null)\" = 'Playing' ]; then playerctl position; else eww get song_position_s; fi || echo 0")
 
 ;; variable to keep the formatted music position
 (defpoll formatted_position :interval "1s"
-"if [ \"$(playerctl status 2>/dev/null)\" = 'Playing' ]; then playerctl position -f '{{duration(position)}}'; else eww get formatted_position; fi || echo '0:00'")
+  "playerctl position -f '{{duration(position)}}' || echo '0:00'")
+;if [ \"$(playerctl status 2>/dev/null)\" = 'Playing' ]; then playerctl position -f '{{duration(position)}}'; else eww get formatted_position; fi || echo '0:00'")
 
 ;; variable to keep cover art
 (defpoll cover_art_path :interval "1s" "./scripts/get_cover.sh")
