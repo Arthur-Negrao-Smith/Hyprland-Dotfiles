@@ -1,13 +1,13 @@
 /* ---- Colors ---- */
 * {
-    bg0:    argb:A00f1523;
-    bg1:    #0f1523;
-    bg2:    argb:800f1523;
-    bg3:    #F75C66;
-    fg0:    #c3c4c8;
-    fg1:    #c3c4c8;
-    fg2:    #5e6374;
-    fg3:    argb:A0c3c4c8;
+    bg0:    __BACK_A0__;
+    bg1:    __BACK_SOLID__;
+    bg2:    __DIM_GRAY_A0__;
+    bg3:    __ACCENT__;
+    fg0:    __FORE__;
+    fg1:    __FORE__;
+    fg2:    __DIM_GRAY__;
+    fg3:    __DIM_GRAY_DARK__;
 }
 
 /* ---- Format ----*/

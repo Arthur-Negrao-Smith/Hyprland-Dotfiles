@@ -18,6 +18,10 @@ touch "$SAVED_STATE"
 DUNST_CONFIG="$HOME/.config/dunst/dunstrc"
 DUNST_TEMPLATE="$HOME/.config/dunst/dunstrc.template"
 
+# ---- Rofi path ----
+ROFI_TEMPLATE="$HOME/.config/rofi/config.rasi.template"
+ROFI_CONFIG="$HOME/.config/rofi/config.rasi"
+
 # ---- File names ----
 DEFAULT_NAME=$(basename "$DEFAULT_WALLPAPER")
 LAST_SAVED_NAME=$(basename "$(cat "$SAVED_STATE")")
@@ -59,6 +63,25 @@ sed -e "s@__BACK__@$background@g" \
     -e "s@__COLOR3__@$color3@g" \
     -e "s@__COLOR4__@$color4@g" \
     "$DUNST_TEMPLATE" > "$DUNST_CONFIG"
+
+# ---- Rofi ----
+ROFI_BACK_SOLID="$background"
+ROFI_FORE="$foreground"
+ROFI_ACCENT="$color1"
+ROFI_GRAY_MEDIUM="$color8"
+ROFI_GRAY_DARK="argb:A0${foreground:1}"
+
+ROFI_BACK_A0="argb:A0${background:1}"
+ROFI_GRAY_A0="argb:80${color0:1}"
+
+sed -e "s@__BACK_A0__@$ROFI_BACK_A0@g" \
+    -e "s@__BACK_SOLID__@$ROFI_BACK_SOLID@g" \
+    -e "s@__DIM_GRAY_A0__@$ROFI_GRAY_A0@g" \
+    -e "s@__ACCENT__@$ROFI_ACCENT@g" \
+    -e "s@__FORE__@$ROFI_FORE@g" \
+    -e "s@__DIM_GRAY__@$ROFI_GRAY_MEDIUM@g" \
+    -e "s@__DIM_GRAY_DARK__@$ROFI_GRAY_DARK@g" \
+    "$ROFI_TEMPLATE" > "$ROFI_CONFIG"
 
 # ---- Reload apps ----
 hyprctl reload
