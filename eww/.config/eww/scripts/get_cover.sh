@@ -2,7 +2,7 @@
 
 WIDGET_DIR=$(dirname "$0")
 DEFAULT_COVER="$WIDGET_DIR/assets/DEFAULTImage.jpeg"
-CACHE_DIR="$HOME/.cache/eww/music-widget"
+CACHE_DIR="/tmp/music-widget"
 mkdir -p "$CACHE_DIR"
 
 # Function to safely exit with the default cover
