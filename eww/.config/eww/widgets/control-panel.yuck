@@ -126,37 +126,77 @@
 (defpoll bluetooth_state :interval "5s"
   "./scripts/get_bluetooth.sh")
 
+;; variable to keep status of notifications
+(defpoll is_dnd_on :interval "2s"
+  "dunstctl is-paused")
+
+(defpoll is_nightlight_on :interval "1s"
+  "./scripts/get_nightlight.sh")
+
 (defwidget panel-buttons []
   (box
     :class "panel-buttons-box"
-    :orientation "h"
+    :orientation "v"
     :space-evenly true
     :spacing 15
     :valign "center"
 
-    ;; network button
-    (button
-      :class "panel-button network-button ${network_state}"
-      :tooltip "Network: ${network_state}"
-      :onclick "nm-connetion-editor"
-      (label
-        :class "panel-button-icon"
-        :text {network_state == "wifi" ? "  Wi-fi " :
-                network_state == "ethernet" ? "󰈁 Ethernet" :
-                network_state == "offline" ? "  No Signal" : "󰈂 Disconnect"}
+    (box
+      :orientation "h"
+      :space-evenly true
+      :spacing 15
+      ;; network button
+      (button
+        :class "panel-button network-button ${network_state}"
+        :tooltip "Network: ${network_state}"
+        :onclick "./scripts/toggle_network.sh"
+        (label
+          :class "panel-button-icon"
+          :text {network_state == "wifi" ? "  Wi-fi " :
+                  network_state == "ethernet" ? "󰈁 Ethernet" :
+                  network_state == "offline" ? "  No Signal" : "󰈂 Disconnect"}
+        )
+      )
+
+      ;; bluetooth button
+      (button
+        :class "panel-button bluetooth-button ${bluetooth_state}"
+        :tooltip "Bluetooth: ${bluetooth_state}"
+        :onclick "./scripts/toggle_bluetooth.sh"
+        (label
+          :class "panel-button-icon"
+          :text {bluetooth_state == "connected" ? "󰂱 Connected" :
+                 bluetooth_state == "on" ? "󰂳 On" :
+                 bluetooth_state == "off" ? "󰂯 Off" : "󰂲 Disabled"}
+        )
       )
     )
 
-    ;; bluetooth button
-    (button
-      :class "panel-button bluetooth-button ${bluetooth_state}"
-      :tooltip "Bluetooth: ${bluetooth_state}"
-      :onclick {bluetooth_state == "on" || bluetooth_state == "connected" ? "bluetoothctl power off" : "bluetoothctl power on"}
-      (label
-        :class "panel-button-icon"
-        :text {bluetooth_state == "connected" ? "󰂱 Connected" :
-               bluetooth_state == "on" ? "󰂳 On" :
-               bluetooth_state == "off" ? "󰂯 Off" : "󰂲 Disabled"}
+    (box
+      :orientation "h"
+      :space-evenly true
+      :spacing 15
+
+      ;; nightlight button
+      (button
+        :class "panel-button nightlight-button ${is_nightlight_on == 'true' ? 'on' : 'off'}"
+        :tooltip "Night Light: ${is_nightlight_on == 'true' ? 'On' : 'Off'}"
+        :onclick "./scripts/toggle_nightlight.sh"
+          (label
+            :class "panel-button-icon"
+            :text " ${is_nightlight_on == 'true' ? 'On' : 'Off'}"
+          )
+      )
+
+        ;; do not disturb button
+      (button
+        :class "panel-button dnd-button ${is_dnd_on == 'true' ? 'on' : 'off'}"
+        :tooltip "Do Not Disturb: ${is_dnd_on == 'true' ? 'On' : 'Off'}"
+        :onclick "dunstctl set-paused toggle"
+        (label
+          :class "panel-button-icon"
+          :text {is_dnd_on == 'true' ? "󰂛 Silent On " : "󰂚 Silent Off"}
+        )
       )
     )
   )
