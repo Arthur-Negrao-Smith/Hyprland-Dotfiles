@@ -1,20 +1,20 @@
 /*---- Pywal Colors ----*/
-@define-color background #261013;
-@define-color foreground #c8c3c4;
-@define-color color1 #B0674C;
-@define-color color2 #7B8B41;
-@define-color color3 #BDAF54;
-@define-color color4 #DF9A5C;
-@define-color color5 #C5BC8F;
-@define-color color7 #c8c3c4;
-@define-color color8 #745f62;
-@define-color color9 #B0674C;
-@define-color color10 #7B8B41;
-@define-color color11 #BDAF54;
-@define-color color12 #DF9A5C;
-@define-color color13 #C5BC8F;
-@define-color color14 #EFE097;
-@define-color color15 #c8c3c4;
+@define-color background __BACK__;
+@define-color foreground __FORE__;
+@define-color color1 __COLOR1__;
+@define-color color2 __COLOR2__;
+@define-color color3 __COLOR3__;
+@define-color color4 __COLOR4__;
+@define-color color5 __COLOR5__;
+@define-color color7 __COLOR7__;
+@define-color color8 __COLOR8__;
+@define-color color9 __COLOR9__;
+@define-color color10 __COLOR10__;
+@define-color color11 __COLOR11__;
+@define-color color12 __COLOR12__;
+@define-color color13 __COLOR13__;
+@define-color color14 __COLOR14__;
+@define-color color15 __COLOR15__;
 
 /*---- General Colors ----*/
 @define-color blue @color4;
@@ -45,11 +45,11 @@
 @define-color light-purple-icon @light-purple;
 
 /*---- Modules Colors ----*/
-@define-color default_bg rgba(38, 16, 19, 0.85);
+@define-color default_bg __BACK_ALPHA_85__;
 
 /*---- Workspaces Colors ----*/
-@define-color work-button-hover rgba(200, 195, 196, 0.7);
-@define-color work-button-visible rgba(38, 16, 19, 0.85);
+@define-color work-button-hover __COLOR7_ALPHA_70__;
+@define-color work-button-visible __BACK_ALPHA_85__;
 @define-color work-button-urgente @red;
 @define-color work-button-active @blue;
 

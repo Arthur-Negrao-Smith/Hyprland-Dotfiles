@@ -1,7 +1,17 @@
 {
     "modules-left": ["hyprland/workspaces", "tray"],
     "modules-center": ["clock", "custom/keyboard"],
-    "modules-right": ["custom/updates","bluetooth", "network", "custom/temperature", "cpu", "memory", "custom/scratchpad-indicator", "pulseaudio", "custom/power"],
+    "modules-right": [
+        "custom/updates",
+        "custom/temperature",
+        "cpu",
+        "memory",
+
+        "network",
+        "bluetooth",
+        "pulseaudio",
+        "custom/power"
+    ],
 
     "hyprland/mode": {
         "format": "<span style=\"italic\">{}</span>"
@@ -16,7 +26,8 @@
         "format-no-controller": "no-controller 󰂲",
         "tooltip": true,
         "tooltip-format": "Bluetooth:  {status}",
-        "on-click": "blueman-manager"
+        "on-click": "eww open --toggle control-panel --screen $(hyprctl activewindow -j | jq '.monitor')",
+        "on-click-right": "blueman-manager"
     },
 
     "network": {
@@ -24,14 +35,15 @@
         "format-ethernet": "{ifname} ",
         "format-disconnected": "Offline \uf127", 
         "max-length": 50,
-        "on-click": "alacritty -e 'nmtui'",
+        "on-click": "eww open --toggle control-panel --screen $(hyprctl activewindow -j | jq '.monitor')",
+        "on-click-right": "alacritty -e 'nmtui'",
         "tooltip": true,
         "tooltip-format": "<b>Network: </b>{ifname}{essid}",
     },
 
     "custom/temperature": {
         "critical-threshold": 80,
-        "return-type": "json", 
+        "return-type": "json",
         "exec": "~/.config/scripts/cpu_temperature.sh",
         "interval": 5,
         "format": "{}°C ",
@@ -131,12 +143,12 @@
     },
 
     "custom/updates": {
-        "exec": "~/.config/scripts/updates.sh",
+        "exec": "~/.config/scripts/get_updates.sh",
         "return-type": "json",
-        "interval": 3600,
+        "interval": 60,
         "format": "{} 󰏔",
         "tooltip": true,
         "tooltip-format": "<b>Updates avaliable: </b> {}",
         "on-click": "alacritty -e ~/.config/scripts/update-system.sh"
-    }
+    },
 }

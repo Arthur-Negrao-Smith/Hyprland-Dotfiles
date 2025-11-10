@@ -1,7 +1,9 @@
 #!/bin/bash
 
+CACHE_FILE="/tmp/updates.state"
+
 sudo pacman -Syu
 yay -Syu
 flatpak update
 
-pkill -RTMIN+10 waybar
+echo "{\"text\":\"0\", \"class\":\"zero\"}" > $CACHE_FILE

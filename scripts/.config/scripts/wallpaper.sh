@@ -22,6 +22,10 @@ DUNST_TEMPLATE="$HOME/.config/dunst/dunstrc.template"
 ROFI_TEMPLATE="$HOME/.config/rofi/config.rasi.template"
 ROFI_CONFIG="$HOME/.config/rofi/config.rasi"
 
+# ---- Waybar path ----
+WAYBAR_TEMPLATE="$HOME/.config/waybar/style.css.template"
+WAYBAR_CONFIG="$HOME/.config/waybar/style.css"
+
 # ---- File names ----
 DEFAULT_NAME=$(basename "$DEFAULT_WALLPAPER")
 LAST_SAVED_NAME=$(basename "$(cat "$SAVED_STATE")")
@@ -83,11 +87,52 @@ sed -e "s@__BACK_A0__@$ROFI_BACK_A0@g" \
     -e "s@__DIM_GRAY_DARK__@$ROFI_GRAY_DARK@g" \
     "$ROFI_TEMPLATE" > "$ROFI_CONFIG"
 
+# ---- Waybar ----
+hex_to_rgb() {
+    local hex=$1
+    local r_hex="0x${hex:0:2}"
+    local g_hex="0x${hex:2:2}"
+    local b_hex="0x${hex:4:2}"
+    echo "$((r_hex)), $((g_hex)), $((b_hex))"
+}
+
+RGB_BACK=$(hex_to_rgb "${background:1}")
+RGB_COLOR7=$(hex_to_rgb "${color7:1}")
+
+WAYBAR_BACK_50="rgba($RGB_BACK, 0.5)"
+WAYBAR_BACK_85="rgba($RGB_BACK, 0.85)"
+WAYBAR_COLOR7_70="rgba($RGB_COLOR7, 0.7)"
+
+sed -e "s@__BACK__@$background@g" \
+    -e "s@__FORE__@$foreground@g" \
+    -e "s@__COLOR0__@$color0@g" \
+    -e "s@__COLOR1__@$color1@g" \
+    -e "s@__COLOR2__@$color2@g" \
+    -e "s@__COLOR3__@$color3@g" \
+    -e "s@__COLOR4__@$color4@g" \
+    -e "s@__COLOR5__@$color5@g" \
+    -e "s@__COLOR6__@$color6@g" \
+    -e "s@__COLOR7__@$color7@g" \
+    -e "s@__COLOR8__@$color8@g" \
+    -e "s@__COLOR9__@$color9@g" \
+    -e "s@__COLOR10__@$color10@g" \
+    -e "s@__COLOR11__@$color11@g" \
+    -e "s@__COLOR12__@$color12@g" \
+    -e "s@__COLOR13__@$color13@g" \
+    -e "s@__COLOR14__@$color14@g" \
+    -e "s@__COLOR15__@$color15@g" \
+    -e "s@__BACK_ALPHA_50__@$WAYBAR_BACK_50@g" \
+    -e "s@__BACK_ALPHA_85__@$WAYBAR_BACK_85@g" \
+    -e "s@__COLOR7_ALPHA_70__@$WAYBAR_COLOR7_70@g" \
+    "$WAYBAR_TEMPLATE" > "$WAYBAR_CONFIG"
+
 # ---- Reload apps ----
+pkill dunst
+pkill waybar
 hyprctl reload
 eww reload
-killall dunst
 dunst &
+waybar &
 
 # ---- Send a notification ----
 notify-send -a "System" "Your wallpaper was changed to '$(basename "$WALLPAPER")'"

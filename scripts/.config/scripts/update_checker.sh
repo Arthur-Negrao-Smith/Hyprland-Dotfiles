@@ -1,5 +1,7 @@
 #!/bin/bash
 
+CACHE_FILE="/tmp/updates.state"
+
 pacman_updates=$(checkupdates 2>/dev/null | wc -l)
 yay_updates=$(yay -Qu 2>/dev/null | wc -l)
 total=$((pacman_updates + yay_updates))
@@ -27,5 +29,4 @@ else
     notify-send -a "System" "Updates" "You have very much updates avaliable: $total"
 fi
 
-# Saída no formato JSON para a Waybar
-echo "{\"text\":\"$text\", \"class\":\"$class\"}"
+echo "{\"text\":\"$text\", \"class\":\"$class\"}" > $CACHE_FILE
