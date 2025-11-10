@@ -109,7 +109,8 @@ $hover-color: #f0f0f0;
 .bluetooth-button.on,
 .bluetooth-button.connected,
 .nightlight-button.on,
-.dnd-button.on {
+.dnd-button.on,
+.swayidle-button.on {
   background-color: $secondary-neon;
   color: $text-color;
   text-shadow: 0 0 5px rgba($primary-neon, 0.7);

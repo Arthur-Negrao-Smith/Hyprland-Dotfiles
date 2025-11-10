@@ -132,8 +132,13 @@
 (defpoll is_dnd_on :interval "2s"
   "dunstctl is-paused")
 
+;; variable to keep status of nightlight
 (defpoll is_nightlight_on :interval "1s"
   "./scripts/get_nightlight.sh")
+
+;; variable to keep status of swayidle
+(defpoll is_swayidle_on :interval "2s"
+  "if pgrep -x 'swayidle' > /dev/null; then echo 'true'; else echo 'false'; fi")
 
 (defwidget panel-buttons []
   (box
@@ -198,6 +203,17 @@
         (label
           :class "panel-button-icon"
           :text {is_dnd_on == 'true' ? "󰂛 Silent On " : "󰂚 Silent Off"}
+        )
+      )
+    )
+    (box :class "shutdown-timer-box" :orientation "h" :space-evenly true :spacing 10
+      (button
+        :class "panel-button swayidle-button ${is_swayidle_on == 'true' ? 'on' : 'off'}"
+        :tooltip "Swayidle: ${is_swayidle_on == 'true' ? 'On' : 'Off'}"
+        :onclick "./scripts/toggle_swayidle.sh"
+        (label
+          :class "panel-button-icon"
+          :text {is_swayidle_on == 'true' ? "󰔟 Idle: On" : "󰔟 Idle: Off"}
         )
       )
     )
