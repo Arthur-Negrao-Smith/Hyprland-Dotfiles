@@ -1,0 +1,6 @@
+[Unit]
+Description=Check updates from AUR and Pacman
+
+[Service]
+Type=oneshot
+ExecStart=%h/.config/scripts/update_checker.sh
