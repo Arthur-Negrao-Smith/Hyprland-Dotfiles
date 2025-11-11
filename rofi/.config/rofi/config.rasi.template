@@ -53,10 +53,11 @@ inputbar {
 }
 
 prompt {
-    text-color: @fg2;
+    text-color: @fg0;
 }
 
 entry {
+    text-color:         @fg0;
     placeholder:        "Search";
     placeholder-color:  @fg3;
 }
