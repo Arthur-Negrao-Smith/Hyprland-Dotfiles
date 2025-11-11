@@ -278,3 +278,13 @@ window#waybar {
 #pulseaudio {
   color: @yellow-icon;
 }
+
+/*---- Clock ----*/
+#clock {
+  color: @color5
+}
+
+/*---- Keyboard ----*/
+#custom-keyboard {
+  color: @soft-yellow-icon
+}

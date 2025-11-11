@@ -135,7 +135,7 @@
         "name": "custom/keyboard-layout",
         "exec": "~/.config/scripts/keyboard-layout.sh",
         "on-click": "~/.config/scripts/swap-keyboard-layout.sh",
-        "format": "\uf11c   {}   ",
+        "format": "\uf11c   {} ",
         "interval": 2,
         "tooltip": true,
         "tooltip-format": "Keyboard Input"
