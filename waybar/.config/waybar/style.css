@@ -1,20 +1,20 @@
 /*---- Pywal Colors ----*/
-@define-color background #0f1823;
-@define-color foreground #c3c5c8;
-@define-color color1 #584154;
-@define-color color2 #AB5268;
-@define-color color3 #B1896E;
-@define-color color4 #1C6F8C;
-@define-color color5 #666E89;
-@define-color color7 #c3c5c8;
-@define-color color8 #5e6774;
-@define-color color9 #584154;
-@define-color color10 #AB5268;
-@define-color color11 #B1896E;
-@define-color color12 #1C6F8C;
-@define-color color13 #666E89;
-@define-color color14 #C06F91;
-@define-color color15 #c3c5c8;
+@define-color background #0f1523;
+@define-color foreground #c3c4c8;
+@define-color color1 #F75C66;
+@define-color color2 #FEAC6F;
+@define-color color3 #5B199E;
+@define-color color4 #9E1E9E;
+@define-color color5 #D929A0;
+@define-color color7 #c3c4c8;
+@define-color color8 #5e6374;
+@define-color color9 #F75C66;
+@define-color color10 #FEAC6F;
+@define-color color11 #5B199E;
+@define-color color12 #9E1E9E;
+@define-color color13 #D929A0;
+@define-color color14 #E039B4;
+@define-color color15 #c3c4c8;
 
 /*---- General Colors ----*/
 @define-color blue @color4;
@@ -45,11 +45,11 @@
 @define-color light-purple-icon @light-purple;
 
 /*---- Modules Colors ----*/
-@define-color default_bg rgba(15, 24, 35, 0.85);
+@define-color default_bg rgba(15, 21, 35, 0.85);
 
 /*---- Workspaces Colors ----*/
-@define-color work-button-hover rgba(195, 197, 200, 0.7);
-@define-color work-button-visible rgba(15, 24, 35, 0.85);
+@define-color work-button-hover rgba(195, 196, 200, 0.7);
+@define-color work-button-visible rgba(15, 21, 35, 0.85);
 @define-color work-button-urgente @red;
 @define-color work-button-active @blue;
 
@@ -164,7 +164,6 @@ window#waybar {
 #custom-media,
 #tray,
 #mode,
-#custom-power,
 #custom-menu,
 #custom-keyboard,
 #custom-updates,
@@ -181,7 +180,7 @@ window#waybar {
 #custom-power {
   background-color: @red;
   border-radius: 100px;
-  padding: 1px 1px 1px 6px;
+  padding: 1px 6px 1px 10px;
 }
 
 /*-----Indicators----*/

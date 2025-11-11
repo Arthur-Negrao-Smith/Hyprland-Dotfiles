@@ -164,7 +164,6 @@ window#waybar {
 #custom-media,
 #tray,
 #mode,
-#custom-power,
 #custom-menu,
 #custom-keyboard,
 #custom-updates,
@@ -181,7 +180,7 @@ window#waybar {
 #custom-power {
   background-color: @red;
   border-radius: 100px;
-  padding: 1px 1px 1px 6px;
+  padding: 1px 6px 1px 10px;
 }
 
 /*-----Indicators----*/
