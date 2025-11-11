@@ -26,6 +26,10 @@ ROFI_CONFIG="$HOME/.config/rofi/config.rasi"
 WAYBAR_TEMPLATE="$HOME/.config/waybar/style.css.template"
 WAYBAR_CONFIG="$HOME/.config/waybar/style.css"
 
+# ---- Wlogout ----
+WLOGOUT_TEMPLATE="$HOME/.config/wlogout/style.css.template"
+WLOGOUT_CONFIG="$HOME/.config/wlogout/style.css"
+
 # ---- File names ----
 DEFAULT_NAME=$(basename "$DEFAULT_WALLPAPER")
 LAST_SAVED_NAME=$(basename "$(cat "$SAVED_STATE")")
@@ -126,6 +130,15 @@ sed -e "s@__BACK__@$background@g" \
     -e "s@__COLOR7_ALPHA_70__@$WAYBAR_COLOR7_70@g" \
     "$WAYBAR_TEMPLATE" > "$WAYBAR_CONFIG"
 
+# ---- Wlogout ----
+RGB_BACK_70="rgba($RGB_BACK, 0.7)"
+sed -e "s@__BACK_ALPHA_50__@$WAYBAR_BACK_50@g" \
+    -e "s@__BACK_ALPHA_70__@$RGB_BACK_70@g" \
+    -e "s@__FORE__@$foreground@g" \
+    -e "s@__COLOR0__@$color0@g" \
+    -e "s@__COLOR4__@$color4@g" \
+    "$WLOGOUT_TEMPLATE" > "$WLOGOUT_CONFIG"
+
 # ---- Reload apps ----
 pkill dunst
 pkill waybar
@@ -138,4 +151,4 @@ waybar &
 notify-send -a "System" "Your wallpaper was changed to '$(basename "$WALLPAPER")'"
 
 # ---- Apply the selected wallpaper ----
-hyprctl hyprpaper reload ,"$DEFAULT_WALLPAPER"
+hyprctl hyprpaper reload ,"$WAY"
