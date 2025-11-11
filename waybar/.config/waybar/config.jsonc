@@ -1,12 +1,19 @@
 {
-    "modules-left": ["hyprland/workspaces", "tray"],
-    "modules-center": ["clock", "custom/keyboard"],
-    "modules-right": [
+    "modules-left": [
+        "clock",
+        "custom/keyboard",
+
         "custom/updates",
         "custom/temperature",
         "cpu",
         "memory",
 
+        "tray"
+    ],
+    "modules-center": [
+        "hyprland/workspaces",
+    ],
+    "modules-right": [
         "network",
         "bluetooth",
         "pulseaudio",
@@ -135,7 +142,20 @@
     },
 
     "hyprland/workspaces": {
-        "format": "{name}",
+        "format": "{icon}",
+        "format-icons": {
+            "default": "",
+            "active": "",
+        },
+        "persistent-workspaces": {
+            "*": [
+                1,
+                2,
+                3,
+                4,
+                5,
+            ]
+        },
         "on-scroll-up": "hyprctl dispatch workspace e+1",
         "on-scroll-down": "hyprctl dispatch workspace e-1",
         "tooltip": true,
