@@ -88,6 +88,7 @@ window#waybar {
   margin: 0 10px 0 0;
 }
 
+#tray,
 #clock,
 #custom-keyboard,
 #custom-updates,
@@ -115,6 +116,10 @@ window#waybar {
 #custom-keyboard {
   border-radius: 0 20px 20px 0;
   margin: 0 10px 0 0;
+}
+
+#tray {
+  border-radius: 20px 20px 20px 20px;
 }
 
 .modules-center {
