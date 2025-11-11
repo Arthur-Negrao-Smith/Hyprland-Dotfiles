@@ -12,7 +12,7 @@ $font-family: "JetBrains Mono Nerd Font";
 
 * {
   all: unset;
-  font-family: "CaskaydiaCove Nerd Font";
+  font-family: $font-family;
 }
 
 /* ---- All Widget ---- */
