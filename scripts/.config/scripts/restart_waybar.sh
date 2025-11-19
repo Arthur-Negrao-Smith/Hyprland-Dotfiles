@@ -2,12 +2,8 @@
 
 if pgrep -x "waybar" > /dev/null
 then
-    # Mata o processo da waybar
-    pkill waybar
-    # Espera um pouco para garantir que o processo foi terminado
-    sleep 0.5
-    # Inicializa novamente a waybar
-    waybar &
+    # signal to restart the waybar
+    pkill --signal SIGUSR2 waybar
 else
     # Inicializa a waybar
     waybar &

@@ -141,11 +141,10 @@ sed -e "s@__BACK_ALPHA_50__@$WAYBAR_BACK_50@g" \
 
 # ---- Reload apps ----
 pkill dunst
-pkill waybar
 hyprctl reload
 eww reload
 dunst &
-waybar &
+pkill --signal SIGUSR2 waybar
 
 # ---- Send a notification ----
 notify-send -a "System" "Your wallpaper was changed to '$(basename "$WALLPAPER")'"
