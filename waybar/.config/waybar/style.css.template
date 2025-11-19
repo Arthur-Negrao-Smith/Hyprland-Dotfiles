@@ -1,20 +1,4 @@
-/*---- Pywal Colors ----*/
-@define-color background __BACK__;
-@define-color foreground __FORE__;
-@define-color color1 __COLOR1__;
-@define-color color2 __COLOR2__;
-@define-color color3 __COLOR3__;
-@define-color color4 __COLOR4__;
-@define-color color5 __COLOR5__;
-@define-color color7 __COLOR7__;
-@define-color color8 __COLOR8__;
-@define-color color9 __COLOR9__;
-@define-color color10 __COLOR10__;
-@define-color color11 __COLOR11__;
-@define-color color12 __COLOR12__;
-@define-color color13 __COLOR13__;
-@define-color color14 __COLOR14__;
-@define-color color15 __COLOR15__;
+@import "wal.css";
 
 /*---- General Colors ----*/
 @define-color blue @color4;
@@ -130,7 +114,7 @@ window#waybar {
 }
 
 .modules-left {
-  margin: 10px 0 0 5px;
+  margin: 10px 0 0 10px;
   background-color: transparent;
 }
 

@@ -107,25 +107,7 @@ WAYBAR_BACK_50="rgba($RGB_BACK, 0.5)"
 WAYBAR_BACK_85="rgba($RGB_BACK, 0.85)"
 WAYBAR_COLOR7_70="rgba($RGB_COLOR7, 0.7)"
 
-sed -e "s@__BACK__@$background@g" \
-    -e "s@__FORE__@$foreground@g" \
-    -e "s@__COLOR0__@$color0@g" \
-    -e "s@__COLOR1__@$color1@g" \
-    -e "s@__COLOR2__@$color2@g" \
-    -e "s@__COLOR3__@$color3@g" \
-    -e "s@__COLOR4__@$color4@g" \
-    -e "s@__COLOR5__@$color5@g" \
-    -e "s@__COLOR6__@$color6@g" \
-    -e "s@__COLOR7__@$color7@g" \
-    -e "s@__COLOR8__@$color8@g" \
-    -e "s@__COLOR9__@$color9@g" \
-    -e "s@__COLOR10__@$color10@g" \
-    -e "s@__COLOR11__@$color11@g" \
-    -e "s@__COLOR12__@$color12@g" \
-    -e "s@__COLOR13__@$color13@g" \
-    -e "s@__COLOR14__@$color14@g" \
-    -e "s@__COLOR15__@$color15@g" \
-    -e "s@__BACK_ALPHA_50__@$WAYBAR_BACK_50@g" \
+sed -e "s@__BACK_ALPHA_50__@$WAYBAR_BACK_50@g" \
     -e "s@__BACK_ALPHA_85__@$WAYBAR_BACK_85@g" \
     -e "s@__COLOR7_ALPHA_70__@$WAYBAR_COLOR7_70@g" \
     "$WAYBAR_TEMPLATE" > "$WAYBAR_CONFIG"
@@ -144,7 +126,7 @@ pkill dunst
 hyprctl reload
 eww reload
 dunst &
-pkill --signal SIGUSR2 waybar
+~/.config/scripts/restart_waybar.sh
 
 # ---- Send a notification ----
 notify-send -a "System" "Your wallpaper was changed to '$(basename "$WALLPAPER")'"
