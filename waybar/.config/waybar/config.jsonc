@@ -88,9 +88,9 @@
     },
 
     "clock": {
-        "format": "{:%H:%M}",
+        "format": "{:%H:%M} 󰥔",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "{:%d/%m/%Y}",
+        "format-alt": "{:%d/%m/%Y} ",
         "on-click-right": "flatpak run org.gnome.Calendar"
     },
 
@@ -135,7 +135,7 @@
         "name": "custom/keyboard-layout",
         "exec": "~/.config/scripts/keyboard-layout.sh",
         "on-click": "~/.config/scripts/swap-keyboard-layout.sh",
-        "format": "\uf11c   {} ",
+        "format": "{} 󰌌",
         "interval": 2,
         "tooltip": true,
         "tooltip-format": "Keyboard Input"
