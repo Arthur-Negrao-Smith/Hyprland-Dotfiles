@@ -33,7 +33,7 @@
         "format-no-controller": "no-controller 󰂲",
         "tooltip": true,
         "tooltip-format": "Bluetooth:  {status}",
-        "on-click": "eww open --toggle control-panel --screen $(hyprctl activewindow -j | jq '.monitor')",
+        "on-click": "eww open --toggle control-panel --screen $(~/.config/scripts/monitor_focused.sh)",
         "on-click-right": "blueman-manager"
     },
 
@@ -42,7 +42,7 @@
         "format-ethernet": "{ifname} ",
         "format-disconnected": "Offline \uf127", 
         "max-length": 50,
-        "on-click": "eww open --toggle control-panel --screen $(hyprctl activewindow -j | jq '.monitor')",
+        "on-click": "eww open --toggle control-panel --screen $(~/.config/scripts/monitor_focused.sh)",
         "on-click-right": "alacritty -e 'nmtui'",
         "tooltip": true,
         "tooltip-format": "<b>Network: </b>{ifname}{essid}",
@@ -110,7 +110,7 @@
             "car": "",
             "default": ["", "", ""]
         },
-        "on-click": "eww open --toggle control-panel --screen $(hyprctl activewindow -j | jq '.monitor')",
+        "on-click": "eww open --toggle control-panel --screen $(~/.config/scripts/monitor_focused.sh)",
         "on-click-right": "helvum"
     },
 
