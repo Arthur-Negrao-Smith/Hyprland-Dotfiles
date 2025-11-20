@@ -7,7 +7,15 @@ if ! bluetoothctl --timeout 2 list | grep -q "Controller"; then
 fi
 
 # Check service is on
-if ! systemctl is-active --quiet bluetooth.service; then
+STATUS=$(systemctl is-active bluetooth.service | tr -d '\n' | tr -d ' ')
+if [ "$STATUS" != "active" ]; then
+    echo "off"
+    exit 0
+fi
+
+# Check the adapter status
+ADAPTER_STATUS=$(bluetoothctl show | grep "Powered" | awk '{print $2}')
+if [ "$ADAPTER_STATUS" == "no" ]; then
     echo "off"
     exit 0
 fi
