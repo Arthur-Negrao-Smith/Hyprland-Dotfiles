@@ -27,7 +27,8 @@
     "bluetooth": {
         "format": "{status} ",
         "format-on": "on ",
-        "format-connected": "{device_alias} 󰂰",
+        "format-connected": "{device_alias} 󰂱",
+        "format-connected-battery": "{device_alias} {device_battery_percentage}% 󰂱",
         "format-disabled": "Off 󰂲",
         "format-off": "Off 󰂲",
         "format-no-controller": "no-controller 󰂲",
@@ -46,6 +47,21 @@
         "on-click-right": "alacritty -e 'nmtui'",
         "tooltip": true,
         "tooltip-format": "<b>Network: </b>{ifname}{essid}",
+    },
+
+    "battery": {
+        "interval": 60,
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity}% {icon}",
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "format-warning": "{capacity}% {icon}",
+        "format-critical": "{capacity}% {icon}",
+        "format-charging": "{capacity}% 󰂄",
+        "format-full": "{capacity} 󱟢",
+        "tooltip": "{time} {icon}",
     },
 
     "custom/temperature": {
