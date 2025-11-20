@@ -2,7 +2,7 @@
 
 cava -p <(cat <<EOF
 [general]
-bars = 28
+bars = 26
 [output]
 method = raw
 raw_target = /dev/stdout
