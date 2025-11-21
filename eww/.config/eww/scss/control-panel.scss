@@ -1,12 +1,28 @@
 @import "wal.scss";
 
+$black: $color0;
+$red: $color1;
+$green: $color2;
+$yellow: $color3;
+$blue: $color4;
+$magenta: $color5;
+$cyan: $color6;
+$white: $color7;
+
+$bright_black: $color8;
+$bright_red: $color9;
+$bright_green: $color10;
+$bright_yellow: $color11;
+$bright_blue: $color12;
+$bright_magenta: $color13;
+$bright_cyan: $color14;
+$bright_white: $color15;
+
 $bg-color: rgba($background, 0.85);
-$primary-neon: $color6;
-$secondary-neon: $color5;
+
+$primary-neon: $cyan;
+$secondary-neon: $magenta;
 $text-color: $foreground;
-$slider-highlight-background: #89b4fa;
-$slider-trough-background: #080809;
-$hover-color: $color7;
 
 $font-family: "JetBrains Mono Nerd Font";
 
@@ -20,7 +36,7 @@ $font-family: "JetBrains Mono Nerd Font";
   background-color: $bg-color;
   border-radius: 16px;
   padding: 10px;
-  box-shadow: inset 0 0 5px rgba($color4, 0.4);
+  box-shadow: inset 0 0 5px rgba($blue, 0.4);
 }
 
 /* ---- Control Panel ---- */
@@ -53,16 +69,16 @@ $font-family: "JetBrains Mono Nerd Font";
 
 .slider-panel trough {
   all: unset;
-  background-color: $color0;
+  background-color: $black;
   min-width: 40px;
   min-height: 150px;
   border-radius: 50px;
-  box-shadow: inset 0 0 5px rgba($color2, 0.4);
+  box-shadow: inset 0 0 5px rgba($green, 0.4);
 }
 
 .slider-panel highlight {
   all: unset;
-  background-image: linear-gradient(to right, $color3, $color2);
+  background-image: linear-gradient(to right, $yellow, $red);
   min-width: 38px;
   border-radius: 35px;
   padding-bottom: 50px;
@@ -85,7 +101,7 @@ $font-family: "JetBrains Mono Nerd Font";
 
   font-size: 16px;
 
-  background-color: $color8;
+  background-color: rgba($bright_black, 0.5);
 
   color: $foreground;
   text-shadow: none;
@@ -95,7 +111,7 @@ $font-family: "JetBrains Mono Nerd Font";
   padding-left: 16px;
   padding-right: 16px;
 
-  box-shadow: inset 0 0 5px rgba($color2, 0.4);
+  box-shadow: inset 0 0 5px rgba($green, 0.4);
   border-radius: 90px;
   transition: all 0.15s ease-out;
 }
@@ -112,7 +128,7 @@ $font-family: "JetBrains Mono Nerd Font";
 .nightlight-button.on,
 .dnd-button.on,
 .swayidle-button.on {
-  background-color: rgba($secondary-neon, 0.8);
+  background-color: rgba($blue, 0.8);
   color: $text-color;
   text-shadow: 0 0 5px rgba($primary-neon, 0.7);
 }

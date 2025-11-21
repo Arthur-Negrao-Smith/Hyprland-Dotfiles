@@ -23,12 +23,12 @@
       :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%"
       :tooltip "Volume: ${volume}%")
 
-    (eventbox :onclick "pactl set-sink-mute @DEFAULT_SINK@ toggle"
-      :valign "end"
-      :halign "center"
+      ; icon
       (label :text {is_muted == "true" ? "󰖁" : "󰕾"}
-             :class "slider-icon")
-    )
+             :class "slider-icon"
+        :valign "end"
+        :halign "center"
+      )
   )
 )
 
@@ -52,6 +52,7 @@
       :halign "center"
     )
 
+      ; icon
       (label :text "󰖙" :class "slider-icon"
         :valign "end"
         :halign "center"
