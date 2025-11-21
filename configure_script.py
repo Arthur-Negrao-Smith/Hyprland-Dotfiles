@@ -146,7 +146,10 @@ Returns:
 
 
 def create_config_dirs(dry_run: bool = True):
-    pass
+    print("Creating configuration directories...")
+    log.info("Creating configuration directories...")
+    for dir in CONFIG_DIRS:
+        run_cmd("mkdir", "-p", f"{XDG_CONFIG_HOME}/{dir}", dry_run=dry_run)
 
 
 def update_system(dry_run: bool = True):
