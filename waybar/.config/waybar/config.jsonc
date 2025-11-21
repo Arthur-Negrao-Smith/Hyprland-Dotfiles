@@ -4,7 +4,7 @@
         "custom/keyboard",
 
         "custom/updates",
-        "custom/temperature",
+        "temperature",
         "cpu",
         "memory",
 
@@ -39,14 +39,15 @@
     },
 
     "network": {
-        "format-wifi": "{essid} ({signalStrength}%) ",
+        "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+        "format-wifi": "{essid} ({signalStrength}%) {icon}",
         "format-ethernet": "{ifname} ",
-        "format-disconnected": "Offline \uf127", 
+        "format-disconnected": "Offline ",
         "max-length": 50,
         "on-click": "eww open --toggle control-panel --screen $(~/.config/scripts/monitor_focused.sh)",
         "on-click-right": "alacritty -e 'nmtui'",
         "tooltip": true,
-        "tooltip-format": "<b>Network: </b>{ifname}{essid}",
+        "tooltip-format": "<b>Network: </b>{ifname}{essid}\n{bandwidthDownBytes}  \t{bandwidthUpBytes} ",
     },
 
     "battery": {
@@ -61,7 +62,23 @@
         "format-critical": "{capacity}% {icon}",
         "format-charging": "{capacity}% 󰂄",
         "format-full": "{capacity} 󱟢",
-        "tooltip": "{time} {icon}",
+        "tooltip": true,
+        "tooltip-format": "{time} {icon}",
+    },
+
+    "temperature": {
+        // path to hwmon to get the temperature
+        "hwmon-path": "/sys/class/hwmon/hwmon3/temp1_input",
+        "interval": 5,
+        "warning-threshold": 80,
+        "critical-threshold": 100,
+        "format-warning": "{temperatureC}°C ",
+        "format-critical": "{temperatureC}°C ",
+        "format-icons": ["", "", "", "", ""],
+        "format": "{temperatureC}°C {icon}",
+        "on-click": "psensor",
+        "tooltip": true,
+        "tooltip-format": "<b>CPU Temperature</b>\n{temperatureC}°C {icon}"
     },
 
     "custom/temperature": {
@@ -69,7 +86,8 @@
         "return-type": "json",
         "exec": "~/.config/scripts/cpu_temperature.sh",
         "interval": 5,
-        "format": "{}°C ",
+        "format-icons": ["", "", "", "", ""],
+        "format": "{}°C {icon}",
         "format-high": "{}°C ",
         "on-click": "psensor",
         "tooltip": true,

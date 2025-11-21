@@ -77,6 +77,7 @@ window#waybar {
 #custom-keyboard,
 #custom-updates,
 #custom-temperature,
+#temperature,
 #cpu,
 #memory,
 #custom-scratchpad-indicator {
@@ -143,6 +144,7 @@ window#waybar {
 #cpu,
 #memory,
 #custom-temperature,
+#temperature,
 #network,
 #pulseaudio,
 #custom-media,
@@ -231,6 +233,18 @@ window#waybar {
 }
 
 #custom-temperature.high {
+  color: @red-icon;
+}
+
+#temperature {
+  color: @cian-icon;
+}
+
+#temperature.warning {
+  color: @yellow-icon;
+}
+
+#temperature.critical {
   color: @red-icon;
 }
 
