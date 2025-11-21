@@ -146,6 +146,9 @@ Returns:
 
 
 def create_config_dirs(dry_run: bool = True):
+    """
+    Function to create dirs in '~/config'
+    """
     print("Creating configuration directories...")
     log.info("Creating configuration directories...")
     for dir in CONFIG_DIRS:
@@ -153,7 +156,13 @@ def create_config_dirs(dry_run: bool = True):
 
 
 def update_system(dry_run: bool = True):
-    pass
+    """
+    Function to update the syystem
+    """
+    log.info("Updating system packages...")
+    print("Updating system packages...")
+    run_cmd("sudo", "pacman", "-Syu", "--noconfirm", dry_run=dry_run)
+    run_cmd("yay", dry_run=dry_run)
 
 
 def install_packages(dry_run: bool = True):
