@@ -93,16 +93,23 @@ class COLORS:
 
 
 # ==== FUNCTIONS ==== #
+def custom_print(msg: str, color: str | None = None, end: str = "\n") -> None:
+    if color is None:
+        print(f"{COLORS.YELLOW}{msg}{COLORS.RESET}", end=end)
+    else:
+        print(f"{color}{msg}{COLORS.RESET}", end=end)
+
+
 def show_command(args: tuple, dry_run: bool) -> None:
     """
     Function to show the bash commands
     """
     if dry_run:
-        print(f"{COLORS.YELLOW}DRY-RUN: {COLORS.RESET}", end="")
+        custom_print(f"DRY-RUN: ", end="")
     else:
-        print(f"{COLORS.YELLOW}RUN: {COLORS.RESET}", end="")
+        custom_print(f"RUN: ", end="")
 
-    print(f"{COLORS.BLUE}{args[0]}{COLORS.RESET} ", end="")
+    custom_print(f"{args[0]} ", color=COLORS.BLUE, end="")
     for arg in args[1:]:
         print(f"{arg} ", end="")
     print()
@@ -149,8 +156,8 @@ def create_config_dirs(dry_run: bool = True):
     """
     Function to create dirs in '~/config'
     """
-    print("Creating configuration directories...")
     log.info("Creating configuration directories...")
+    custom_print(">>> Creating configuration directories...")
     for dir in CONFIG_DIRS:
         run_cmd("mkdir", "-p", f"{XDG_CONFIG_HOME}/{dir}", dry_run=dry_run)
 
@@ -160,13 +167,37 @@ def update_system(dry_run: bool = True):
     Function to update the syystem
     """
     log.info("Updating system packages...")
-    print("Updating system packages...")
+    custom_print(">>> Updating system packages...")
     run_cmd("sudo", "pacman", "-Syu", "--noconfirm", dry_run=dry_run)
-    run_cmd("yay", dry_run=dry_run)
+    run_cmd("yay", "--noconfirm", dry_run=dry_run)
 
 
 def install_packages(dry_run: bool = True):
-    pass
+    """
+    Function to install packages with pacman and yay
+    """
+    log.info("Installing packages from Packman...")
+    custom_print(">>> Installing packages from Packman...")
+    run_cmd(
+        "sudo",
+        "pacman",
+        "-S",
+        "--needed",
+        "--noconfirm",
+        *PACMAN_PACKAGES,
+        dry_run=dry_run,
+    )
+
+    log.info("Installing packages from Yay...")
+    custom_print(">>> Installing packages from Yay...")
+    run_cmd(
+        "yay",
+        "-S",
+        "--needed",
+        "--noconfirm",
+        *YAY_PACKAGES,
+        dry_run=dry_run,
+    )
 
 
 def backup_existing_configs(dry_run: bool = True):
