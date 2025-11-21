@@ -6,6 +6,7 @@
         "custom/updates",
         "temperature",
         "cpu",
+        "disk",
         "memory",
 
         "tray"
@@ -78,7 +79,7 @@
         "format": "{temperatureC}°C {icon}",
         "on-click": "psensor",
         "tooltip": true,
-        "tooltip-format": "<b>CPU Temperature</b>\n{temperatureC}°C {icon}"
+        //"tooltip-format": "<b>CPU Temperature</b>: {temperatureC}°C {icon}"
     },
 
     "custom/temperature": {
@@ -107,6 +108,16 @@
         "on-click": "alacritty -e 'btop'"
     },
 
+    "disk": {
+        "path": "/",
+        "interval": 60,
+        "format": "{percentage_used}% 󰪶",
+        "unit": "GB",
+        "tooltip": true,
+        "tooltip-format": "Computer Space\nUsed: {used}\nTotal: {total}",
+        "on-click": "nautilus /",
+    },
+
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
@@ -118,7 +129,7 @@
     "tray": {
         "icon-size": 15,
         "spacing": 10,
-        "reverse-direction": true
+        "reverse-direction": true,
     },
 
     "clock": {
@@ -130,18 +141,22 @@
 
     "pulseaudio": {
         "format": "{volume}% {icon} ",
-        "format-bluetooth": "{volume}% {icon} {format_source}",
-        "format-bluetooth-muted": " {icon} {format_source}",
-        "format-muted": "0% {icon} ",
+        "format-bluetooth": "{volume}% {icon}",
+        "format-bluetooth-muted": "{volume}% {icon}",
+        "format-muted": "{volume}%  ",
         "format-source": "{volume}% ",
-        "format-source-muted": "",
+        "format-source-muted": "{volume}%  ",
         "format-icons": {
             "headphone": "",
             "hands-free": "",
             "headset": "",
             "phone": "",
+            "phone-muted": "",
             "portable": "",
+            "portable-muted": "",
             "car": "",
+            "speaker": "󰓃",
+            "speaker-muted": "󰓄",
             "default": ["", "", ""]
         },
         "on-click": "eww open --toggle control-panel --screen $(~/.config/scripts/monitor_focused.sh)",
@@ -151,7 +166,7 @@
     "custom/power": {
         "format": " ",
         "on-click": "wlogout",
-        "tooltip": true,	
+        "tooltip": true,
         "tooltip-format": "<b>Power Menu</b>"
     },
 

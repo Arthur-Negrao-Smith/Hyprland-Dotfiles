@@ -2,11 +2,14 @@
 
 /*---- General Colors ----*/
 @define-color blue @color4;
+@define-color light-blue @color12;
 @define-color green @color2;
+@define-color light-green @color10;
 @define-color yellow @color3;
 @define-color light-yellow @color3;
 @define-color soft-yellow @color3;
-@define-color cian @color5;
+@define-color cyan @color5;
+@define-color light-cyan @color13;
 @define-color red @color1;
 @define-color light-red @color1;
 @define-color pink @color5;
@@ -20,7 +23,7 @@
 @define-color yellow-icon @yellow;
 @define-color light-yellow-icon @light-yellow;
 @define-color soft-yellow-icon @soft-yellow;
-@define-color cian-icon @cian;
+@define-color cyan-icon @cyan;
 @define-color red-icon @red;
 @define-color light-red-icon @light-red;
 @define-color pink-icon @pink;
@@ -80,6 +83,7 @@ window#waybar {
 #temperature,
 #cpu,
 #memory,
+#disk,
 #custom-scratchpad-indicator {
   background-color: @default_bg;
   border-radius: 0;
@@ -143,6 +147,7 @@ window#waybar {
 #battery,
 #cpu,
 #memory,
+#disk,
 #custom-temperature,
 #temperature,
 #network,
@@ -174,11 +179,11 @@ window#waybar {
   color: @green-icon;
 }
 
-#pulseaudio.muted {
-  color: @light-red-icon;
+/*---- Battery ----*/
+#battery {
+  color: @cyan;
 }
 
-/*---- Battery ----*/
 #battery.charging {
   color: @green;
 }
@@ -191,17 +196,13 @@ window#waybar {
   color: @red;
 }
 
-#temperature.critical {
-  color: @red;
-}
-
 /*-----Updates-----*/
 #custom-updates.zero {
-  color: @blue-icon;
+  color: @light-cyan;
 }
 
 #custom-updates.low {
-  color: @green-icon;
+  color: @blue;
 }
 
 #custom-updates.medium {
@@ -225,27 +226,27 @@ window#waybar {
 
 /*----Temperature----*/
 #custom-temperature.low {
-  color: @cian-icon;
+  color: @green;
 }
 
 #custom-temperature.medium {
-  color: @yellow-icon;
+  color: @yellow;
 }
 
 #custom-temperature.high {
-  color: @red-icon;
+  color: @red;
 }
 
 #temperature {
-  color: @cian-icon;
+  color: @green;
 }
 
 #temperature.warning {
-  color: @yellow-icon;
+  color: @yellow;
 }
 
 #temperature.critical {
-  color: @red-icon;
+  color: @red;
 }
 
 /*---- Network ----*/
@@ -268,12 +269,17 @@ window#waybar {
 
 /*---- CPU ----*/
 #cpu {
-  color: @pink-icon;
+  color: @yellow;
 }
 
 /*---- Memory ----*/
 #memory {
-  color: @soft-yellow-icon;
+  color: @light-green;
+}
+
+/*---- Disk ----*/
+#disk {
+  color: @blue;
 }
 
 /*---- Audio ----*/
@@ -281,12 +287,16 @@ window#waybar {
   color: @yellow-icon;
 }
 
+#pulseaudio.muted {
+  color: @light-red-icon;
+}
+
 /*---- Clock ----*/
 #clock {
-  color: @color5
+  color: @cyan;
 }
 
 /*---- Keyboard ----*/
 #custom-keyboard {
-  color: @soft-yellow-icon
+  color: @blue;
 }
