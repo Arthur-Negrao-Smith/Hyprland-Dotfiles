@@ -269,8 +269,18 @@ def stow_configs(dry_run: bool = True) -> None:
     run_cmd("stow", "zsh", dry_run=dry_run)
 
 
-def change_shell_to_zsh(dry_run: bool = True):
-    pass
+def change_shell_to_zsh(dry_run: bool = True) -> None:
+    """
+    Function to change the current shell to zsh
+
+    Args:
+        dry_run (bool): True if don't run the command, else runs normally
+    """
+    custom_print(">>> Changing the current shell...")
+    log.info("Changing the current shell...")
+
+    run_cmd("chsh", "-s", ZSH_BIN, dry_run=dry_run)
+    run_cmd("source", ZSH_PATH, dry_run=dry_run)
 
 
 def change_config_neovim(dry_run: bool = True):
