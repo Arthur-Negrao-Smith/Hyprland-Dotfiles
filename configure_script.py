@@ -200,8 +200,31 @@ def install_packages(dry_run: bool = True):
     )
 
 
+def backup_if_exists(target: str, dry_run: bool) -> None:
+    """
+    Function to create backup to file if it exist
+    """
+    if os.path.exists(target) and not os.path.islink(target):
+        log.warning(f"{target} already exists. Creating backup as {target}.bak")
+        custom_print(f"{target} already exists. Creating backup as {target}.bak")
+
+        run_cmd("mv", target, f"{target}.bak", dry_run=dry_run)
+
+
 def backup_existing_configs(dry_run: bool = True):
-    pass
+    """
+    Function to create backup of original configs files
+    """
+    custom_print(">>> Checking for conflicts before using stow...")
+    log.info("Checking for conflicts before using stow...")
+
+    for dir in CONFIG_DIRS:
+        if dir == "zsh":
+            target: str = f"{HOME}/.zshrc"
+        else:
+            target: str = f"{XDG_CONFIG_HOME}/{dir}"
+
+        backup_if_exists(target, dry_run)
 
 
 def stow_configs(dry_run: bool = True):
