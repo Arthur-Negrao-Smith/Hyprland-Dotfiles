@@ -94,6 +94,9 @@ class COLORS:
 
 # ==== FUNCTIONS ==== #
 def custom_print(msg: str, color: str | None = None, end: str = "\n") -> None:
+    """
+    Function to colorize the output of print
+    """
     if color is None:
         print(f"{COLORS.YELLOW}{msg}{COLORS.RESET}", end=end)
     else:
@@ -103,6 +106,9 @@ def custom_print(msg: str, color: str | None = None, end: str = "\n") -> None:
 def show_command(args: tuple, dry_run: bool) -> None:
     """
     Function to show the bash commands
+
+    Args:
+        dry_run (bool): True if 'DRY-RUN' is activated, else show 'RUN'
     """
     if dry_run:
         custom_print(f"DRY-RUN: ", end="")
@@ -120,6 +126,10 @@ def show_command(args: tuple, dry_run: bool) -> None:
 def run_cmd(*args, dry_run: bool = True) -> sbp.CompletedProcess | None:
     """
     Function to run bash commands
+
+    Args:
+        args (tuple[str, ...]): All commands to run
+        dry_run (bool): True if don't run the command, else runs normally
     """
     if dry_run:
         show_command(args, dry_run=dry_run)
@@ -155,6 +165,9 @@ Returns:
 def create_config_dirs(dry_run: bool = True):
     """
     Function to create dirs in '~/config'
+
+    Args:
+        dry_run (bool): True if don't run the command, else runs normally
     """
     log.info("Creating configuration directories...")
     custom_print(">>> Creating configuration directories...")
@@ -164,7 +177,10 @@ def create_config_dirs(dry_run: bool = True):
 
 def update_system(dry_run: bool = True):
     """
-    Function to update the syystem
+    Function to update the system packages
+
+    Args:
+        dry_run (bool): True if don't run the command, else runs normally
     """
     log.info("Updating system packages...")
     custom_print(">>> Updating system packages...")
@@ -175,6 +191,9 @@ def update_system(dry_run: bool = True):
 def install_packages(dry_run: bool = True):
     """
     Function to install packages with pacman and yay
+
+    Args:
+        dry_run (bool): True if don't run the command, else runs normally
     """
     log.info("Installing packages from Packman...")
     custom_print(">>> Installing packages from Packman...")
@@ -203,6 +222,10 @@ def install_packages(dry_run: bool = True):
 def backup_if_exists(target: str, dry_run: bool) -> None:
     """
     Function to create backup to file if it exist
+
+    Args:
+        target (str): Path to file
+        dry_run (bool): True if don't run the command, else runs normally
     """
     if os.path.exists(target) and not os.path.islink(target):
         log.warning(f"{target} already exists. Creating backup as {target}.bak")
@@ -211,9 +234,12 @@ def backup_if_exists(target: str, dry_run: bool) -> None:
         run_cmd("mv", target, f"{target}.bak", dry_run=dry_run)
 
 
-def backup_existing_configs(dry_run: bool = True):
+def backup_existing_configs(dry_run: bool = True) -> None:
     """
     Function to create backup of original configs files
+
+    Args:
+        dry_run (bool): True if don't run the command, else runs normally
     """
     custom_print(">>> Checking for conflicts before using stow...")
     log.info("Checking for conflicts before using stow...")
@@ -227,8 +253,20 @@ def backup_existing_configs(dry_run: bool = True):
         backup_if_exists(target, dry_run)
 
 
-def stow_configs(dry_run: bool = True):
-    pass
+def stow_configs(dry_run: bool = True) -> None:
+    """
+    Function to create symbolical links
+
+    Args:
+        dry_run (bool): True if don't run the command, else runs normally
+    """
+    custom_print(">>> Creating symbolic links with stow...")
+    log.info("Creating symbolic links with stow...")
+
+    for dir in CONFIG_DIRS:
+        run_cmd("stow", dir, dry_run=dry_run)
+
+    run_cmd("stow", "zsh", dry_run=dry_run)
 
 
 def change_shell_to_zsh(dry_run: bool = True):
