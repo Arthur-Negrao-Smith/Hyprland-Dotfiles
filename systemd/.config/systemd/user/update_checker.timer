@@ -2,10 +2,8 @@
 Description=Run the updates checker every 30 min
 
 [Timer]
-OnBootSec=1min
-
+OnBootSec=5min
 OnUnitActiveSec=30min
-Persistent=true
 
 [Install]
 WantedBy=timers.target

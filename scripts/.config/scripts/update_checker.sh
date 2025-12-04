@@ -2,11 +2,11 @@
 
 CACHE_FILE="/tmp/updates.state"
 
-PACMAN_COUNT=$(checkupdates 2>/dev/null | wc -l)
-YAY_COUNT=$(yay -Qu 2>/dev/null | wc -l)
+PACMAN_COUNT=$(/usr/bin/checkupdates 2>/dev/null | wc -l)
+YAY_COUNT=$(/usr/bin/yay -Qu 2>/dev/null | wc -l)
 total=$((PACMAN_COUNT + YAY_COUNT))
 
-TOTAL_INSTALLED_PACKAGES=$(pacman -Q | wc -l)
+TOTAL_INSTALLED_PACKAGES=$(/usr/bin/pacman -Q | wc -l)
 
 if [ "$total" -eq 0 ]; then
     text="0"
