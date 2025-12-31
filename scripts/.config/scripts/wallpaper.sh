@@ -132,4 +132,5 @@ dunst &
 notify-send -a "System" "Your wallpaper was changed to '$(basename "$WALLPAPER")'"
 
 # ---- Apply the selected wallpaper ----
-hyprctl hyprpaper reload ,"$DEFAULT_WALLPAPER"
+pkill hyprpaper
+hyprpaper &
