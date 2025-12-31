@@ -1,3 +1,7 @@
 # Pywal templates
 */wal.css
 */wal.scss
+
+# Logs
+log.txt
+*.log
