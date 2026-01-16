@@ -1,0 +1,12 @@
+:Sub	substitute.txt	/*:Sub*
+:Sub-details	substitute.txt	/*:Sub-details*
+:Sub-examples	substitute.txt	/*:Sub-examples*
+:Sub-notes	substitute.txt	/*:Sub-notes*
+:Sub-related	substitute.txt	/*:Sub-related*
+:Sub-source	substitute.txt	/*:Sub-source*
+:Sub-usage	substitute.txt	/*:Sub-usage*
+:Substitute	substitute.txt	/*:Substitute*
+Sub.txt	substitute.txt	/*Sub.txt*
+kickstart-is	kickstart.txt	/*kickstart-is*
+kickstart-is-not	kickstart.txt	/*kickstart-is-not*
+kickstart.nvim	kickstart.txt	/*kickstart.nvim*
