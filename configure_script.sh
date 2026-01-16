@@ -34,6 +34,10 @@ CONFIG_DIRS=(
   "waybar"
   "wlogout"
   "yazi"
+  "dunst"
+  "eww"
+  "systemd"
+  "zsh"
 )
 
 # pacman packages to install
@@ -51,13 +55,31 @@ PACMAN_PACKAGES=(
   "qt5‑graphicaleffects"
   "qt5‑quickcontrols2"
   "qt5‑svg"
+  "jq"
+  "sensors"
 )
 
 # yay packages to install
 YAY_PACKAGES=(
   "waybar"
   "wlogout"
+  "cava"
 )
+
+# pywal files
+PYWAL_LINKS=(
+  "waybar"
+  "wlogout"
+  "rofi"
+)
+
+PYWAL_TEMPLATES_FILES=(
+  "colors-waybar.css"
+  "colors-waybar.css" # to use in wlogout
+  "colors-rofi-dark.rasi"
+)
+
+PYWAL_TEMPLATES_PATH="$HOME/.cache/wal/templates"
 
 
 # ===== COLORS ===== #
@@ -150,6 +172,13 @@ stow_configs() {
     run_cmd stow "$dir"
   done
   run_cmd stow zsh
+}
+
+# Link files with pywal16
+link_pywal() {
+  log "Link... pywal"
+  for dir in "${PYWAL_LINKS}"; do
+    run_cmd ln "${PYWAL_TEMPLATES_PATH}/"
 }
 
 # changing actual shell

@@ -39,7 +39,6 @@ CONFIG_DIRS: tuple[str, ...] = (
     "hypr",
     "rofi",
     "scripts",
-    "swayidle",
     "waybar",
     "wlogout",
     "yazi",
@@ -47,17 +46,18 @@ CONFIG_DIRS: tuple[str, ...] = (
     "eww",
     "systemd",
     "zsh",
+    "nvim"
 )
 
 # pacman packages to install
 PACMAN_PACKAGES: tuple[str, ...] = (
     "alacritty",
     "rofi",
-    "swayidle",
     "dunst",
     "stow",
     "zsh",
     "nvim",
+    "hypridle",
     "sddm",
     "yazi",
     "tar",
@@ -66,6 +66,10 @@ PACMAN_PACKAGES: tuple[str, ...] = (
     "qt5‑svg",
     "jq",
     "sensors",
+    "curl",
+    "unzip",
+    "zip",
+    "git",
 )
 
 # yay packages to install
@@ -280,11 +284,26 @@ def change_shell_to_zsh(dry_run: bool = True) -> None:
     log.info("Changing the current shell...")
 
     run_cmd("chsh", "-s", ZSH_BIN, dry_run=dry_run)
+
+    log.debug("Source command to load the new configs")
     run_cmd("source", ZSH_PATH, dry_run=dry_run)
 
 
-def change_config_neovim(dry_run: bool = True):
-    pass
+def change_config_neovim(dry_run: bool = True) -> None:
+    """
+    Function to configure the neovim
+
+    Args:
+        dry_run (bool): True if don't run the command, else runs normally
+    """
+    custom_print(">>> Configuring the neovim...")
+    log.info("Configuring the neovim...")
+
+    log.debug("Backuping the neovim files...")
+    backup_if_exists(NEOVIM_CONFIG_PATH, dry_run=dry_run)
+
+    log.debug("Cloning the neovim repository...")
+    run_cmd("git", "clone", NEOVIM_URL_GIT, NEOVIM_CONFIG_PATH, dry_run=dry_run)
 
 
 def configure_sddm(dry_run: bool = True):
@@ -301,6 +320,7 @@ def change_config_script_name(dry_run: bool = True):
 
 def main(dry_run: bool = True):
     start: datetime = datetime.now()
+    log.debug(f"The script starts at: {start}")
 
     create_config_dirs(dry_run)
 
@@ -327,7 +347,7 @@ def main(dry_run: bool = True):
     Finished at {finish}
     Total time: {finish-start}"""
     )
-    print(f"\n{COLORS.GREEN}>>> Installation completed successfully! <<<{COLORS.RESET}")
+    custom_print(f"\n>>> Installation completed successfully! <<<", color=COLORS.GREEN)
     exit(0)
 
 
