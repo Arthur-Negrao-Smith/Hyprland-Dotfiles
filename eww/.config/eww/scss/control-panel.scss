@@ -127,7 +127,7 @@ $font-family: "JetBrains Mono Nerd Font";
 .bluetooth-button.connected,
 .nightlight-button.on,
 .dnd-button.on,
-.swayidle-button.on {
+.idle-button.on {
   background-color: rgba($blue, 0.8);
   color: $text-color;
   text-shadow: 0 0 5px rgba($primary-neon, 0.7);

@@ -115,7 +115,7 @@
               :min 0
               :max song_length_s 
               :value song_position_s 
-              :onchange "playerctl position {}"
+              ;:onchange "playerctl position {}"  ; uncomment if you want active the bar control behaviour
       )
 
       (label :class "cava-visualizer" :text cava)
@@ -139,9 +139,9 @@
 (defpoll is_nightlight_on :interval "1s"
   "./scripts/get_nightlight.sh")
 
-;; variable to keep status of swayidle
-(defpoll is_swayidle_on :interval "2s"
-  "if pgrep -x 'swayidle' > /dev/null; then echo 'true'; else echo 'false'; fi")
+;; variable to keep status of hypridle
+(defpoll idle_status :interval "2s"
+  "if pgrep -x 'hypridle' > /dev/null; then echo 'on'; else echo 'off'; fi")
 
 (defwidget panel-buttons []
   (box
@@ -209,14 +209,15 @@
         )
       )
     )
+
     (box :class "shutdown-timer-box" :orientation "h" :space-evenly true :spacing 10
       (button
-        :class "panel-button swayidle-button ${is_swayidle_on == 'true' ? 'on' : 'off'}"
-        :tooltip "Swayidle: ${is_swayidle_on == 'true' ? 'On' : 'Off'}"
-        :onclick "./scripts/toggle_swayidle.sh"
+        :class "panel-button idle-button ${idle_status}"
+        :tooltip "Hypridle: ${idle_status}"
+        :onclick "./scripts/toggle_idle.sh"
         (label
           :class "panel-button-icon"
-          :text {is_swayidle_on == 'true' ? "󰔟 Idle: On" : "󰔟 Idle: Off"}
+          :text "󰔟 Idle: ${idle_status}"
         )
       )
     )
