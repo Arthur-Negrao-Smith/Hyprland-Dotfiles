@@ -1,0 +1,64 @@
+*Sub.txt*      User Command: :Sub           Last change: 2025 Jul 31
+
+                            :SUB COMMAND                            *:Sub* *:Substitute*
+
+The `:Sub` command provides a simple way to perform non-regex, literal string
+substitutions across the entire buffer or based on visual selection.
+
+==============================================================================
+USAGE                                                              *:Sub-usage*
+
+:Sub {old} {new}       Replace all exact occurrences of {old} with {new}
+                       in the entire buffer.
+
+:Sub {new}             When used after visually selecting a word, replaces
+                       all occurrences of the selected word with {new}.
+
+==============================================================================
+DESCRIPTION                                                      *:Sub-details*
+
+This command is defined in Lua and intended for straightforward substitutions.
+
+It supports two modes:
+
+1. Direct substitution:
+        :Sub old new
+        → Replaces every exact occurrence of 'old' with 'new' across the buffer.
+
+2. Visual mode substitution:
+        - Select a word using visual mode (e.g., `v` or `V`)
+        - Execute:
+              :Sub replacement
+        → Replaces all occurrences of the selected word with 'replacement'
+
+==============================================================================
+NOTES                                                            *:Sub-notes*
+
+- Both {old} and {new} must be simple strings.
+- Substitutions are **literal**, not regex-based.
+- Special characters such as `/`, `\`, `*`, `%`, etc. are not interpreted.
+- The command operates on the **entire buffer**, not a range.
+
+==============================================================================
+EXAMPLES                                                        *:Sub-examples*
+
+        :Sub error fixed
+                → Replaces all "error" with "fixed"
+
+        (In visual mode) select the word "cat" → :Sub dog
+                → Replaces all "cat" with "dog"
+
+==============================================================================
+IMPLEMENTATION DETAILS                                           *:Sub-source*
+
+This command is defined in Lua, typically located in your `init.lua` or
+in a custom module under your `~/.config/nvim/lua/` directory.
+
+==============================================================================
+SEE ALSO                                                         *:Sub-related*
+
+|:s|  |:%s|  |:help substitute|  |:command|  |:lua|
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:
+
