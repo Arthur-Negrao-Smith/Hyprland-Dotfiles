@@ -3,6 +3,7 @@ import sys
 import subprocess as sbp
 import logging
 from datetime import datetime
+from pathlib import Path
 
 logging.getLogger().setLevel(logging.ERROR)
 log: logging.Logger = logging.getLogger(__name__)
@@ -20,6 +21,7 @@ ZSH_BIN: str = "/bin/zsh"
 SCRIPT_FILE: str = os.path.basename(__file__)
 SCRIPT_PATH: str = __file__
 DRY_RUN: bool = False
+USED_STATE_FILE: str = ".already_configured"
 
 # sddm constants
 SDDM_CONFIG_PATH: str = "/etc/sddm.conf.d"
@@ -156,11 +158,16 @@ Options:
 
 Returns:
   0                 If the script was a success
-  1                 If an error occurs in runtime
+  1                 If the script has been used previously
   2                 If the arguments are invalid
   3                 If the number of arguments are invalid
 """
     )
+
+def script_already_used() -> bool:
+    file_path: Path = Path(USED_STATE_FILE)
+
+    return file_path.is_file()
 
 
 def create_config_dirs(dry_run: bool = True):
@@ -297,13 +304,24 @@ def configure_hyprpaper(dry_run: bool = True) -> None:
   run_cmd("mkdir", "-p", WALLPAPER_DIR_PATH, dry_run=dry_run)
 
 
-def change_config_script_name(dry_run: bool = True):
-    pass
+def save_used_state(dry_run: bool = True):
+    """
+    Function to create a file to avoid run the script again
+    """
+    custom_print(">>> Add saving a state to don't use this script again")
+    log.debug("Add saving a state to don't use this script again")
+
+    run_cmd("touch", USED_STATE_FILE, dry_run=dry_run)
 
 
 def main(dry_run: bool = True):
     start: datetime = datetime.now()
     log.debug(f"The script starts at: {start}")
+
+    if script_already_used():
+        custom_print("The script has been used previously", COLORS.RED)
+        log.error("The script has been used previously")
+        exit(1)
 
     create_config_dirs(dry_run)
 
@@ -319,7 +337,7 @@ def main(dry_run: bool = True):
 
     configure_hyprpaper(dry_run)
 
-    change_config_script_name(dry_run)
+    save_used_state(dry_run)
 
     finish: datetime = datetime.now()
 
