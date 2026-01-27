@@ -21,10 +21,6 @@ SCRIPT_FILE: str = os.path.basename(__file__)
 SCRIPT_PATH: str = __file__
 DRY_RUN: bool = False
 
-# git constants
-NEOVIM_URL_GIT: str = "https://github.com/Arthur-Negrao-Smith/My-nvim-config.git"
-NEOVIM_CONFIG_PATH: str = f"{XDG_CONFIG_HOME}/nvim"
-
 # sddm constants
 SDDM_CONFIG_PATH: str = "/etc/sddm.conf.d"
 SDDM_THEMES_PATH: str = "/usr/share/sddm/themes"
@@ -289,23 +285,6 @@ def change_shell_to_zsh(dry_run: bool = True) -> None:
     run_cmd("source", ZSH_PATH, dry_run=dry_run)
 
 
-def change_config_neovim(dry_run: bool = True) -> None:
-    """
-    Function to configure the neovim
-
-    Args:
-        dry_run (bool): True if don't run the command, else runs normally
-    """
-    custom_print(">>> Configuring the neovim...")
-    log.info("Configuring the neovim...")
-
-    log.debug("Backuping the neovim files...")
-    backup_if_exists(NEOVIM_CONFIG_PATH, dry_run=dry_run)
-
-    log.debug("Cloning the neovim repository...")
-    run_cmd("git", "clone", NEOVIM_URL_GIT, NEOVIM_CONFIG_PATH, dry_run=dry_run)
-
-
 def configure_sddm(dry_run: bool = True):
     pass
 
@@ -331,7 +310,6 @@ def main(dry_run: bool = True):
     stow_configs(dry_run)
 
     change_shell_to_zsh(dry_run)
-    change_config_neovim(dry_run)
 
     configure_sddm(dry_run)
 
