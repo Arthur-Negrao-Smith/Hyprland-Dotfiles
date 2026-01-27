@@ -66,10 +66,11 @@ PACMAN_PACKAGES: tuple[str, ...] = (
     "unzip",
     "zip",
     "git",
+    "waybar",
 )
 
 # yay packages to install
-YAY_PACKAGES: tuple[str, ...] = ("waybar", "wlogout", "cava")
+YAY_PACKAGES: tuple[str, ...] = ("wlogout", "cava", "pywal16")
 
 # pywal files
 PYWAL_LINKS: tuple[str, ...] = ("waybar", "wlogout", "rofi")
@@ -289,8 +290,11 @@ def configure_sddm(dry_run: bool = True):
     pass
 
 
-def configure_hyprpaper(dry_run: bool = True):
-    pass
+def configure_hyprpaper(dry_run: bool = True) -> None:
+  custom_print(f">>> Creating wallpaper directory {WALLPAPER_DIR_PATH}...")
+  log.debug(f"Creating wallpaper directory {WALLPAPER_DIR_PATH}")
+
+  run_cmd("mkdir", "-p", WALLPAPER_DIR_PATH, dry_run=dry_run)
 
 
 def change_config_script_name(dry_run: bool = True):
