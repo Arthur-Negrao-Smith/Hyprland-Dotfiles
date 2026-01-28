@@ -409,21 +409,22 @@ def parse_args(args: list) -> None:
     else:
         log_level = logging.INFO
 
-    # Configuring the logger
-
-    root = logging.getLogger()
+    root: logging.Logger = logging.getLogger()
     # remove previous handlers
     for h in root.handlers[:]:
         root.removeHandler(h)
 
     # file handler to save the LOG_FILE
-    fh = logging.FileHandler(LOG_FILE)
-    formatter = logging.Formatter("[%(asctime)s] - [%(levelname)7s] - %(message)s")
+    fh: logging.FileHandler = logging.FileHandler(LOG_FILE)
+    formatter: logging.Formatter = logging.Formatter(
+        "[%(asctime)s] - [%(levelname)7s] - %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S"
+    )
     fh.setFormatter(formatter)
     fh.setLevel(log_level)
 
     # To show stderr
-    sh = logging.StreamHandler()
+    sh: logging.StreamHandler = logging.StreamHandler()
     sh.setFormatter(formatter)
     sh.setLevel(log_level)
 
