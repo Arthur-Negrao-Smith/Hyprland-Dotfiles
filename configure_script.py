@@ -59,9 +59,9 @@ PACMAN_PACKAGES: tuple[str, ...] = (
     "sddm",
     "yazi",
     "tar",
-    "qt5‑graphicaleffects",
-    "qt5‑quickcontrols2",
-    "qt5‑svg",
+    "qt5-graphicaleffects",
+    "qt5-quickcontrols2",
+    "qt5-svg",
     "jq",
     "sensors",
     "curl",
@@ -69,6 +69,7 @@ PACMAN_PACKAGES: tuple[str, ...] = (
     "zip",
     "git",
     "waybar",
+    "curl"
 )
 
 # yay packages to install
@@ -223,6 +224,9 @@ def install_packages(dry_run: bool = True):
         dry_run=dry_run,
     )
 
+    log.debug("Updating the pacman agail")
+    update_system(dry_run=dry_run)
+
 
 def backup_if_exists(target: str, dry_run: bool) -> None:
     """
@@ -270,6 +274,29 @@ def stow_configs(dry_run: bool = True) -> None:
 
     run_cmd("stow", "zsh", dry_run=dry_run)
 
+def configure_zsh(dry_run: bool = True) -> None:
+    """
+    Function to configure all zsh plugins
+    """
+    log.info(">>> Configuring the zsh...")
+
+    log.debug("Configure the oh-my-zsh")
+    run_cmd(
+        "sh",
+        "-c",
+        '"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"',
+        dry_run=dry_run
+    )
+
+    log.debug("Configuring the powerlevel10k")
+    run_cmd(
+        "git",
+        "clone",
+        "--depth=1",
+        "https://github.com/romkatv/powerlevel10k.git",
+        '"${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"',
+        dry_run=dry_run
+    )
 
 def change_shell_to_zsh(dry_run: bool = True) -> None:
     """
@@ -278,8 +305,10 @@ def change_shell_to_zsh(dry_run: bool = True) -> None:
     Args:
         dry_run (bool): True if don't run the command, else runs normally
     """
-    log.info(">>> Changing the current shell...")
+    log.info(">>> Changing the root shell...")
+    run_cmd("sudo", "chsh", "-s", ZSH_BIN, dry_run=dry_run)
 
+    log.info(">>> Changing the current shell...")
     run_cmd("chsh", "-s", ZSH_BIN, dry_run=dry_run)
 
     log.debug("Source command to load the new configs")
@@ -288,7 +317,7 @@ def change_shell_to_zsh(dry_run: bool = True) -> None:
 
 def configure_sddm(dry_run: bool = True):
     log.info("Configuring the sddm to login in system...")
-    log.info(f"Creating directorys: '{SDDM_CONFIG_PATH}' and '{SDDM_THEMES_PATH}'...")
+    log.debug(f"Creating directorys: '{SDDM_CONFIG_PATH}' and '{SDDM_THEMES_PATH}'...")
     run_cmd("mkdir", "-p", SDDM_CONFIG_PATH, dry_run=dry_run)
     run_cmd("mkdir", "-p", SDDM_THEMES_PATH, dry_run=dry_run)
 
@@ -334,6 +363,7 @@ def main(dry_run: bool = True):
     backup_existing_configs(dry_run)
     stow_configs(dry_run)
 
+    configure_zsh(dry_run)
     change_shell_to_zsh(dry_run)
 
     configure_sddm(dry_run)
@@ -417,7 +447,7 @@ def parse_args(args: list) -> None:
     # file handler to save the LOG_FILE
     fh: logging.FileHandler = logging.FileHandler(LOG_FILE)
     formatter: logging.Formatter = logging.Formatter(
-        "[%(asctime)s] - [%(levelname)7s] - %(message)s",
+        "[%(asctime)s] [%(levelname)7s] - %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S"
     )
     fh.setFormatter(formatter)
