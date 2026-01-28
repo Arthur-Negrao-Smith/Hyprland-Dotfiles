@@ -92,8 +92,8 @@ class COLORS:
     YELLOW = "\033[93m"
     BLUE = "\033[94m"
     RED = "\033[91m"
+    GREY = "\033[38"
     RESET = "\033[0m"
-
 
 # ==== FUNCTIONS ==== #
 def custom_print(msg: str, color: str | None = None, end: str = "\n") -> None:
@@ -113,17 +113,17 @@ def show_command(args: tuple, dry_run: bool) -> None:
     Args:
         dry_run (bool): True if 'DRY-RUN' is activated, else show 'RUN'
     """
+    command: str = ""
     if dry_run:
-        custom_print(f"DRY-RUN: ", end="")
+        command += "DRY-RUN: "
     else:
-        custom_print(f"RUN: ", end="")
+        command += f"RUN: "
 
-    custom_print(f"{args[0]} ", color=COLORS.BLUE, end="")
+    command += f"{COLORS.BLUE}{args[0]}{COLORS.RESET} "
     for arg in args[1:]:
-        print(f"{arg} ", end="")
-    print()
+        command += f"{arg} "
 
-    log.info(f"Commands: {args}")
+    log.debug(command)
 
 
 def run_cmd(*args, dry_run: bool = True) -> sbp.CompletedProcess | None:
@@ -177,8 +177,8 @@ def create_config_dirs(dry_run: bool = True):
     Args:
         dry_run (bool): True if don't run the command, else runs normally
     """
-    log.info("Creating configuration directories...")
-    custom_print(">>> Creating configuration directories...")
+    log.info(">>> Creating configuration directories...")
+
     for dir in CONFIG_DIRS:
         run_cmd("mkdir", "-p", f"{XDG_CONFIG_HOME}/{dir}", dry_run=dry_run)
 
@@ -190,8 +190,7 @@ def update_system(dry_run: bool = True):
     Args:
         dry_run (bool): True if don't run the command, else runs normally
     """
-    log.info("Updating system packages...")
-    custom_print(">>> Updating system packages...")
+    log.info(">>> Updating system packages...")
     run_cmd("sudo", "pacman", "-Syu", "--noconfirm", dry_run=dry_run)
     run_cmd("yay", "--noconfirm", dry_run=dry_run)
 
@@ -203,8 +202,7 @@ def install_packages(dry_run: bool = True):
     Args:
         dry_run (bool): True if don't run the command, else runs normally
     """
-    log.info("Installing packages from Packman...")
-    custom_print(">>> Installing packages from Packman...")
+    log.info(">>> Installing packages from Packman...")
     run_cmd(
         "sudo",
         "pacman",
@@ -215,8 +213,7 @@ def install_packages(dry_run: bool = True):
         dry_run=dry_run,
     )
 
-    log.info("Installing packages from Yay...")
-    custom_print(">>> Installing packages from Yay...")
+    log.info(">>> Installing packages from Yay...")
     run_cmd(
         "yay",
         "-S",
@@ -237,7 +234,6 @@ def backup_if_exists(target: str, dry_run: bool) -> None:
     """
     if os.path.exists(target) and not os.path.islink(target):
         log.warning(f"{target} already exists. Creating backup as {target}.bak")
-        custom_print(f"{target} already exists. Creating backup as {target}.bak")
 
         run_cmd("mv", target, f"{target}.bak", dry_run=dry_run)
 
@@ -249,8 +245,7 @@ def backup_existing_configs(dry_run: bool = True) -> None:
     Args:
         dry_run (bool): True if don't run the command, else runs normally
     """
-    custom_print(">>> Checking for conflicts before using stow...")
-    log.info("Checking for conflicts before using stow...")
+    log.info(">>> Checking for conflicts before using stow...")
 
     for dir in CONFIG_DIRS:
         if dir == "zsh":
@@ -268,8 +263,7 @@ def stow_configs(dry_run: bool = True) -> None:
     Args:
         dry_run (bool): True if don't run the command, else runs normally
     """
-    custom_print(">>> Creating symbolic links with stow...")
-    log.info("Creating symbolic links with stow...")
+    log.info(">>> Creating symbolic links with stow...")
 
     for dir in CONFIG_DIRS:
         run_cmd("stow", dir, dry_run=dry_run)
@@ -284,8 +278,7 @@ def change_shell_to_zsh(dry_run: bool = True) -> None:
     Args:
         dry_run (bool): True if don't run the command, else runs normally
     """
-    custom_print(">>> Changing the current shell...")
-    log.info("Changing the current shell...")
+    log.info(">>> Changing the current shell...")
 
     run_cmd("chsh", "-s", ZSH_BIN, dry_run=dry_run)
 
@@ -295,7 +288,7 @@ def change_shell_to_zsh(dry_run: bool = True) -> None:
 
 def configure_sddm(dry_run: bool = True):
     log.info("Configuring the sddm to login in system...")
-    log.debug(f"Creating directorys: '{SDDM_CONFIG_PATH}' and '{SDDM_THEMES_PATH}'...")
+    log.info(f"Creating directorys: '{SDDM_CONFIG_PATH}' and '{SDDM_THEMES_PATH}'...")
     run_cmd("mkdir", "-p", SDDM_CONFIG_PATH, dry_run=dry_run)
     run_cmd("mkdir", "-p", SDDM_THEMES_PATH, dry_run=dry_run)
 
@@ -311,8 +304,7 @@ Current=sugar-candy""", ">", f"{SDDM_CONFIG_PATH}/theme.conf", dry_run=dry_run)
 
 
 def configure_hyprpaper(dry_run: bool = True) -> None:
-  custom_print(f">>> Creating wallpaper directory {WALLPAPER_DIR_PATH}...")
-  log.debug(f"Creating wallpaper directory {WALLPAPER_DIR_PATH}")
+  log.info(f">>> Creating wallpaper directory {WALLPAPER_DIR_PATH}")
 
   run_cmd("mkdir", "-p", WALLPAPER_DIR_PATH, dry_run=dry_run)
 
@@ -321,8 +313,7 @@ def save_used_state(dry_run: bool = True):
     """
     Function to create a file to avoid run the script again
     """
-    custom_print(">>> Add saving a state to don't use this script again")
-    log.debug("Add saving a state to don't use this script again")
+    log.info(">>> Add saving a state to don't use this script again")
 
     run_cmd("touch", USED_STATE_FILE, dry_run=dry_run)
 
@@ -332,8 +323,7 @@ def main(dry_run: bool = True):
     log.debug(f"The script starts at: {start}")
 
     if script_already_used():
-        custom_print("The script has been used previously", COLORS.RED)
-        log.error("The script has been used previously")
+        log.error(f"{COLORS.RED}The script has been used previously{COLORS.RESET}")
         exit(1)
 
     create_config_dirs(dry_run)
@@ -360,7 +350,7 @@ def main(dry_run: bool = True):
     Finished at {finish}
     Total time: {finish-start}"""
     )
-    custom_print(f"\n>>> Installation completed successfully! <<<", color=COLORS.GREEN)
+    log.info(f"{COLORS.GREEN}>>> Installation completed successfully! <<<{COLORS.RESET}")
     exit(0)
 
 
@@ -371,7 +361,7 @@ def parse_args(args: list) -> None:
     # test number of arguments
     if len(args) != 2 and len(args) != 3:
         print(args)
-        print("Bad usage: Exactly one or two arguments are required.")
+        custom_print("Bad usage: Exactly one or two arguments are required.", color=COLORS.RED)
         show_help()
         exit(3)
 
@@ -428,7 +418,7 @@ def parse_args(args: list) -> None:
 
     # file handler to save the LOG_FILE
     fh = logging.FileHandler(LOG_FILE)
-    formatter = logging.Formatter("%(levelname)s - %(message)s")
+    formatter = logging.Formatter("[%(asctime)s] - [%(levelname)7s] - %(message)s")
     fh.setFormatter(formatter)
     fh.setLevel(log_level)
 
@@ -442,17 +432,15 @@ def parse_args(args: list) -> None:
     root.setLevel(log_level)
 
     if dry_run is None:
-        print(
-            f'{COLORS.RED}The flags "--dry-run" or "--run" are required.{COLORS.RESET}'
-        )
+        custom_print('The flags "--dry-run" or "--run" are required', color=COLORS.RED)
         show_help()
         exit(2)
 
     elif dry_run:
-        log.warning("Dry-run mode enabled.")
+        log.warning(f"{COLORS.YELLOW}Dry-run mode enabled.{COLORS.RESET}")
 
     else:
-        log.warning("Run mode enabled.")
+        log.warning(f"{COLORS.YELLOW}Run mode enabled.{COLORS.RESET}")
 
     main(dry_run=dry_run)
 
