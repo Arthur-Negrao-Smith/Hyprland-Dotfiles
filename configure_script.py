@@ -294,7 +294,20 @@ def change_shell_to_zsh(dry_run: bool = True) -> None:
 
 
 def configure_sddm(dry_run: bool = True):
-    pass
+    log.info("Configuring the sddm to login in system...")
+    log.debug(f"Creating directorys: '{SDDM_CONFIG_PATH}' and '{SDDM_THEMES_PATH}'...")
+    run_cmd("mkdir", "-p", SDDM_CONFIG_PATH, dry_run=dry_run)
+    run_cmd("mkdir", "-p", SDDM_THEMES_PATH, dry_run=dry_run)
+
+    log.debug(f"Writing in file: {SDDM_CONFIG_PATH}/theme.conf")
+    run_cmd("echo", "-e", """[Theme]
+Current=sugar-candy""", ">", f"{SDDM_CONFIG_PATH}/theme.conf", dry_run=dry_run)
+
+    log.debug(f"Extracting files from '{SDDM_THEME_TAR_FILE}' to '{SDDM_THEMES_PATH}'...")
+    run_cmd("sudo", "tar", "-xzvf", SDDM_THEME_TAR_FILE, "-C", SDDM_THEMES_PATH, dry_run=dry_run)
+
+    log.debug("Initializing the sddm service")
+    run_cmd("systemctl", "enable", "sddm.service", dry_run=dry_run)
 
 
 def configure_hyprpaper(dry_run: bool = True) -> None:
@@ -402,25 +415,31 @@ def parse_args(args: list) -> None:
             exit(2)
 
     if debug_on:
-        root = logging.getLogger()
-        # remove previous handlers
-        for h in root.handlers[:]:
-            root.removeHandler(h)
+        log_level = logging.DEBUG
+    else:
+        log_level = logging.INFO
 
-        # file handler to save the LOG_FILE
-        fh = logging.FileHandler(LOG_FILE)
-        formatter = logging.Formatter("%(levelname)s - %(message)s")
-        fh.setFormatter(formatter)
-        fh.setLevel(logging.DEBUG)
+    # Configuring the logger
 
-        # To show stderr
-        sh = logging.StreamHandler()
-        sh.setFormatter(formatter)
-        sh.setLevel(logging.DEBUG)
+    root = logging.getLogger()
+    # remove previous handlers
+    for h in root.handlers[:]:
+        root.removeHandler(h)
 
-        root.addHandler(fh)
-        root.addHandler(sh)
-        root.setLevel(logging.DEBUG)
+    # file handler to save the LOG_FILE
+    fh = logging.FileHandler(LOG_FILE)
+    formatter = logging.Formatter("%(levelname)s - %(message)s")
+    fh.setFormatter(formatter)
+    fh.setLevel(log_level)
+
+    # To show stderr
+    sh = logging.StreamHandler()
+    sh.setFormatter(formatter)
+    sh.setLevel(log_level)
+
+    root.addHandler(fh)
+    root.addHandler(sh)
+    root.setLevel(log_level)
 
     if dry_run is None:
         print(
