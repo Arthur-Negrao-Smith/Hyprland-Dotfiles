@@ -26,18 +26,13 @@ USED_STATE_FILE: str = ".already_configured"
 # Assets
 ASSETS_PATH: str = "assets"
 
-# font
-NERD_FONT_PATH: str = f"{ASSETS_PATH}/CascadiaMono"
-NERD_FONT_PATH_ZIP_FILE: str = f"{NERD_FONT_PATH}.zip"
-
 # sddm constants
 SDDM_CONFIG_PATH: str = "/etc/sddm.conf.d"
 SDDM_THEMES_PATH: str = "/usr/share/sddm/themes"
 SDDM_THEME_TAR_FILE: str = f"{ASSETS_PATH}/sugar-candy.tar.gz"
 
 NEEDED_ASSETS: tuple[str, ...] = (
-    NERD_FONT_PATH_ZIP_FILE,
-    SDDM_THEME_TAR_FILE
+    SDDM_THEME_TAR_FILE,
 )
 
 # hyprpaper constants
@@ -82,6 +77,7 @@ PACMAN_PACKAGES: tuple[str, ...] = (
     "git",
     "waybar",
     "curl",
+    "ttf-cascadia-code-nerd",
     "hyprland"
 )
 
@@ -208,6 +204,8 @@ def check_assets_availability() -> None:
             log.warning(">>> Aborting the configuration script...")
             custom_print("\n>>> No modifications were made")
             exit(0)
+        else:
+            log.warning(">>> Continuing configuration without assets")
 
 
 def create_config_dirs(dry_run: bool = True):
