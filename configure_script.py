@@ -78,6 +78,7 @@ PACMAN_PACKAGES: tuple[str, ...] = (
     "waybar",
     "curl",
     "ttf-cascadia-code-nerd",
+    "ttf-0xproto-nerd",
     "hyprland"
 )
 
