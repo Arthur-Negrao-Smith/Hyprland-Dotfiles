@@ -31,12 +31,17 @@ SDDM_CONFIG_PATH: str = "/etc/sddm.conf.d"
 SDDM_THEMES_PATH: str = "/usr/share/sddm/themes"
 SDDM_THEME_TAR_FILE: str = f"{ASSETS_PATH}/sugar-candy.tar.gz"
 
-NEEDED_ASSETS: tuple[str, ...] = (
-    SDDM_THEME_TAR_FILE,
-)
-
 # hyprpaper constants
 WALLPAPER_DIR_PATH: str = f"{HOME}/Images/Wallpapers"
+DEFAULT_WALLPAPER_ASSET: str = f"{ASSETS_PATH}/default_wallpaper.jpg"
+DEFAULT_WALLPAPER: str = f"{WALLPAPER_DIR_PATH}/default_wallpaper.jpg"
+
+# Assets needed
+NEEDED_ASSETS: tuple[str, ...] = (
+    SDDM_THEME_TAR_FILE,
+    DEFAULT_WALLPAPER_ASSET,
+)
+
 
 CONFIG_DIRS: tuple[str, ...] = (
     "dunst",
@@ -83,10 +88,12 @@ PACMAN_PACKAGES: tuple[str, ...] = (
 )
 
 # yay packages to install
-YAY_PACKAGES: tuple[str, ...] = ("wlogout", "cava", "pywal16")
+YAY_PACKAGES: tuple[str, ...] = ("wlogout", "cava", "python-pywal16")
 
 # pywal files
-PYWAL_LINKS: tuple[str, ...] = ("waybar", "wlogout", "rofi")
+PYWAL_LINKS: tuple[str, ...] = ("waybar", "wlogout", "rofi", "dunst")
+
+PYWAL_CACHE_DIR: str = f"{HOME}/.cache/wal"
 
 PYWAL_TEMPLATES_FILES: tuple[str, ...] = (
     "colors-waybar.css",
@@ -388,6 +395,48 @@ def configure_hyprpaper(dry_run: bool = True) -> None:
   run_cmd("mkdir", "-p", WALLPAPER_DIR_PATH, dry_run=dry_run)
 
 
+def configure_pywal(dry_run: bool = True) -> None:
+    log.info(">>> Configuring the pywal")
+
+    log.debug(f"Copy the default wallpaper to {WALLPAPER_DIR_PATH}")
+    run_cmd(
+        "cp",
+        DEFAULT_WALLPAPER_ASSET,
+        DEFAULT_WALLPAPER,
+        dry_run=dry_run
+    )
+
+    log.debug("Run the pywal")
+    run_cmd(
+        "wal",
+        "-n",
+        "-s",
+        "-t",
+        "-e",
+        "-i",
+        DEFAULT_WALLPAPER,
+        dry_run=dry_run
+    )
+
+    log.debug("Link the color to eww")
+    run_cmd(
+        "ln",
+        "-s",
+        f"{PYWAL_CACHE_DIR}/color.scss",
+        "eww/.config/eww/scss/wal.scss",
+        dry_run=dry_run
+    )
+
+    log.debug("Link the color to waybar")
+    run_cmd(
+        "ln",
+        "-s",
+        f"{PYWAL_CACHE_DIR}/color.css",
+        "waybar/.config/waybar/wal.scss",
+        dry_run=dry_run
+    )
+
+
 def save_used_state(dry_run: bool = True):
     """
     Function to create a file to avoid run the script again
@@ -421,6 +470,8 @@ def main(dry_run: bool = True):
     configure_sddm(dry_run)
 
     configure_hyprpaper(dry_run)
+
+    configure_pywal(dry_run)
 
     save_used_state(dry_run)
 
