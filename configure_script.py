@@ -23,10 +23,22 @@ SCRIPT_PATH: str = __file__
 DRY_RUN: bool = False
 USED_STATE_FILE: str = ".already_configured"
 
+# Assets
+ASSETS_PATH: str = "assets"
+
+# font
+NERD_FONT_PATH: str = f"{ASSETS_PATH}/CascadiaMono"
+NERD_FONT_PATH_ZIP_FILE: str = f"{NERD_FONT_PATH}.zip"
+
 # sddm constants
 SDDM_CONFIG_PATH: str = "/etc/sddm.conf.d"
 SDDM_THEMES_PATH: str = "/usr/share/sddm/themes"
-SDDM_THEME_TAR_FILE: str = "sugar-candy.tar.gz"
+SDDM_THEME_TAR_FILE: str = f"{ASSETS_PATH}/sugar-candy.tar.gz"
+
+NEEDED_ASSETS: tuple[str, ...] = (
+    NERD_FONT_PATH_ZIP_FILE,
+    SDDM_THEME_TAR_FILE
+)
 
 # hyprpaper constants
 WALLPAPER_DIR_PATH: str = f"{HOME}/Images/Wallpapers"
@@ -170,6 +182,32 @@ def script_already_used() -> bool:
     file_path: Path = Path(USED_STATE_FILE)
 
     return file_path.is_file()
+
+def assets_are_available() -> bool:
+    """
+    Function to verify all assets
+    """
+    log.info(">>> Verifing the assets available")
+
+    for asset in NEEDED_ASSETS:
+        asset_file: Path = Path(asset)
+        if not asset_file.is_file():
+            log.warning(f"The asset '{asset}' aren't available")
+            return False
+
+    return True
+
+def check_assets_availability() -> None:
+    if not assets_are_available():
+        response: str = input(
+            f"The assets aren't available in '{ASSETS_PATH}'. " +
+            "Continue configuration without assets? [y/n] "
+        ).strip()[0].lower()
+
+        if response != "y":
+            log.warning(">>> Aborting the configuration script...")
+            custom_print("\n>>> No modifications were made")
+            exit(0)
 
 
 def create_config_dirs(dry_run: bool = True):
@@ -326,8 +364,15 @@ def configure_sddm(dry_run: bool = True):
     sddm_file: Path = Path(SDDM_THEME_TAR_FILE)
     if sddm_file.is_file():
         log.debug(f"Writing in file: {SDDM_CONFIG_PATH}/theme.conf")
-        run_cmd("echo", "-e", """[Theme]
-    Current=sugar-candy""", ">", f"{SDDM_CONFIG_PATH}/theme.conf", dry_run=dry_run)
+        run_cmd(
+            "echo",
+            "-e",
+            """[Theme]
+Current=sugar-candy""",
+            ">",
+            f"{SDDM_CONFIG_PATH}/theme.conf",
+            dry_run=dry_run
+        )
 
         log.debug(f"Extracting files from '{SDDM_THEME_TAR_FILE}' to '{SDDM_THEMES_PATH}'...")
         run_cmd("sudo", "tar", "-xzvf", SDDM_THEME_TAR_FILE, "-C", SDDM_THEMES_PATH, dry_run=dry_run)
@@ -360,6 +405,8 @@ def main(dry_run: bool = True):
     if script_already_used():
         log.error(f"{COLORS.RED}The script has been used previously{COLORS.RESET}")
         exit(1)
+
+    check_assets_availability()
 
     create_config_dirs(dry_run)
 
