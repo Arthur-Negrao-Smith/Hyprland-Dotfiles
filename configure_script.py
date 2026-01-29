@@ -69,7 +69,8 @@ PACMAN_PACKAGES: tuple[str, ...] = (
     "zip",
     "git",
     "waybar",
-    "curl"
+    "curl",
+    "hyprland"
 )
 
 # yay packages to install
@@ -317,16 +318,21 @@ def change_shell_to_zsh(dry_run: bool = True) -> None:
 
 def configure_sddm(dry_run: bool = True):
     log.info("Configuring the sddm to login in system...")
+
     log.debug(f"Creating directorys: '{SDDM_CONFIG_PATH}' and '{SDDM_THEMES_PATH}'...")
     run_cmd("mkdir", "-p", SDDM_CONFIG_PATH, dry_run=dry_run)
     run_cmd("mkdir", "-p", SDDM_THEMES_PATH, dry_run=dry_run)
 
-    log.debug(f"Writing in file: {SDDM_CONFIG_PATH}/theme.conf")
-    run_cmd("echo", "-e", """[Theme]
-Current=sugar-candy""", ">", f"{SDDM_CONFIG_PATH}/theme.conf", dry_run=dry_run)
+    sddm_file: Path = Path(SDDM_THEME_TAR_FILE)
+    if sddm_file.is_file():
+        log.debug(f"Writing in file: {SDDM_CONFIG_PATH}/theme.conf")
+        run_cmd("echo", "-e", """[Theme]
+    Current=sugar-candy""", ">", f"{SDDM_CONFIG_PATH}/theme.conf", dry_run=dry_run)
 
-    log.debug(f"Extracting files from '{SDDM_THEME_TAR_FILE}' to '{SDDM_THEMES_PATH}'...")
-    run_cmd("sudo", "tar", "-xzvf", SDDM_THEME_TAR_FILE, "-C", SDDM_THEMES_PATH, dry_run=dry_run)
+        log.debug(f"Extracting files from '{SDDM_THEME_TAR_FILE}' to '{SDDM_THEMES_PATH}'...")
+        run_cmd("sudo", "tar", "-xzvf", SDDM_THEME_TAR_FILE, "-C", SDDM_THEMES_PATH, dry_run=dry_run)
+    else:
+        log.warning(f"The file '{SDDM_THEME_TAR_FILE}' aren't in dotfiles. No themes will be added to sddm")
 
     log.debug("Initializing the sddm service")
     run_cmd("systemctl", "enable", "sddm.service", dry_run=dry_run)
@@ -381,6 +387,8 @@ def main(dry_run: bool = True):
     Total time: {finish-start}"""
     )
     log.info(f"{COLORS.GREEN}>>> Installation completed successfully! <<<{COLORS.RESET}")
+
+    custom_print("\n>>> Type 'start-hyprland' to initilize the Hyprland. (reboot is recomended)")
     exit(0)
 
 
