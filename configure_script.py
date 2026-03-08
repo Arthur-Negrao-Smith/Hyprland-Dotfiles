@@ -56,7 +56,7 @@ CONFIG_DIRS: tuple[str, ...] = (
     "eww",
     "systemd",
     "zsh",
-    "nvim"
+    "nvim",
 )
 
 # pacman packages to install
@@ -84,7 +84,7 @@ PACMAN_PACKAGES: tuple[str, ...] = (
     "curl",
     "ttf-cascadia-code-nerd",
     "ttf-0xproto-nerd",
-    "hyprland"
+    "hyprland",
 )
 
 # yay packages to install
@@ -112,6 +112,7 @@ class COLORS:
     RED = "\033[91m"
     GREY = "\033[38"
     RESET = "\033[0m"
+
 
 # ==== FUNCTIONS ==== #
 def custom_print(msg: str, color: str | None = None, end: str = "\n") -> None:
@@ -144,27 +145,29 @@ def show_command(args: tuple, dry_run: bool) -> None:
     log.debug(command)
 
 
-def run_cmd(*args, dry_run: bool = True) -> sbp.CompletedProcess | None:
+def run_cmd(
+    *args, dry_run: bool = True, shell: bool = False
+) -> sbp.CompletedProcess | None:
     """
     Function to run bash commands
 
     Args:
         args (tuple[str, ...]): All commands to run
         dry_run (bool): True if don't run the command, else runs normally
+        shell (bool): True if must use a real shell. Otherwise, use a standard subprocess.
     """
     if dry_run:
         show_command(args, dry_run=dry_run)
     else:
         show_command(args, dry_run=dry_run)
-        return sbp.run(args)
+        return sbp.run(args, shell=shell)
 
 
 def show_help() -> None:
     """
     Show the script usage
     """
-    print(
-        f"""
+    print(f"""
 
 Usage: {SCRIPT_FILE} [OPTIONS]
 
@@ -179,13 +182,14 @@ Returns:
   1                 If the script has been used previously
   2                 If the arguments are invalid
   3                 If the number of arguments are invalid
-"""
-    )
+""")
+
 
 def script_already_used() -> bool:
     file_path: Path = Path(USED_STATE_FILE)
 
     return file_path.is_file()
+
 
 def assets_are_available() -> bool:
     """
@@ -201,12 +205,17 @@ def assets_are_available() -> bool:
 
     return True
 
+
 def check_assets_availability() -> None:
     if not assets_are_available():
-        response: str = input(
-            f"The assets aren't available in '{ASSETS_PATH}'. " +
-            "Continue configuration without assets? [y/n] "
-        ).strip()[0].lower()
+        response: str = (
+            input(
+                f"The assets aren't available in '{ASSETS_PATH}'. "
+                + "Continue configuration without assets? [y/n] "
+            )
+            .strip()[0]
+            .lower()
+        )
 
         if response != "y":
             log.warning(">>> Aborting the configuration script...")
@@ -319,6 +328,7 @@ def stow_configs(dry_run: bool = True) -> None:
 
     run_cmd("stow", "zsh", dry_run=dry_run)
 
+
 def configure_zsh(dry_run: bool = True) -> None:
     """
     Function to configure all zsh plugins
@@ -330,7 +340,7 @@ def configure_zsh(dry_run: bool = True) -> None:
         "sh",
         "-c",
         '"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"',
-        dry_run=dry_run
+        dry_run=dry_run,
     )
 
     log.debug("Configuring the powerlevel10k")
@@ -340,8 +350,9 @@ def configure_zsh(dry_run: bool = True) -> None:
         "--depth=1",
         "https://github.com/romkatv/powerlevel10k.git",
         '"${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"',
-        dry_run=dry_run
+        dry_run=dry_run,
     )
+
 
 def change_shell_to_zsh(dry_run: bool = True) -> None:
     """
@@ -357,7 +368,7 @@ def change_shell_to_zsh(dry_run: bool = True) -> None:
     run_cmd("chsh", "-s", ZSH_BIN, dry_run=dry_run)
 
     log.debug("Source command to load the new configs")
-    run_cmd("source", ZSH_PATH, dry_run=dry_run)
+    run_cmd("source", ZSH_PATH, dry_run=dry_run, shell=True)
 
 
 def configure_sddm(dry_run: bool = True):
@@ -377,46 +388,61 @@ def configure_sddm(dry_run: bool = True):
 Current=sugar-candy""",
             ">",
             f"{SDDM_CONFIG_PATH}/theme.conf",
-            dry_run=dry_run
+            dry_run=dry_run,
         )
 
-        log.debug(f"Extracting files from '{SDDM_THEME_TAR_FILE}' to '{SDDM_THEMES_PATH}'...")
-        run_cmd("sudo", "tar", "-xzvf", SDDM_THEME_TAR_FILE, "-C", SDDM_THEMES_PATH, dry_run=dry_run)
+        log.debug(
+            f"Extracting files from '{SDDM_THEME_TAR_FILE}' to '{SDDM_THEMES_PATH}'..."
+        )
+        run_cmd(
+            "sudo",
+            "tar",
+            "-xzvf",
+            SDDM_THEME_TAR_FILE,
+            "-C",
+            SDDM_THEMES_PATH,
+            dry_run=dry_run,
+        )
     else:
-        log.warning(f"The file '{SDDM_THEME_TAR_FILE}' aren't in dotfiles. No themes will be added to sddm")
+        log.warning(
+            f"The file '{SDDM_THEME_TAR_FILE}' aren't in dotfiles. No themes will be added to sddm"
+        )
 
     log.debug("Initializing the sddm service")
     run_cmd("systemctl", "enable", "sddm.service", dry_run=dry_run)
 
 
 def configure_hyprpaper(dry_run: bool = True) -> None:
-  log.info(f">>> Creating wallpaper directory {WALLPAPER_DIR_PATH}")
+    log.info(f">>> Creating wallpaper directory {WALLPAPER_DIR_PATH}")
 
-  run_cmd("mkdir", "-p", WALLPAPER_DIR_PATH, dry_run=dry_run)
+    run_cmd("mkdir", "-p", WALLPAPER_DIR_PATH, dry_run=dry_run)
+
+
+def init_systemd_services(dry_run: bool = True) -> None:
+    log.info(f">>> Initializing the systemd services...")
+
+    log.debug("Reload the systemd daemon")
+    run_cmd("systemctl", "--user", "daemon-reload", dry_run=dry_run)
+
+    log.debug("Init the updates checker")
+    run_cmd(
+        "systemctl",
+        "--user",
+        "enable",
+        "--now",
+        "update_checker.timer",
+        dry_run=dry_run,
+    )
 
 
 def configure_pywal(dry_run: bool = True) -> None:
     log.info(">>> Configuring the pywal")
 
     log.debug(f"Copy the default wallpaper to {WALLPAPER_DIR_PATH}")
-    run_cmd(
-        "cp",
-        DEFAULT_WALLPAPER_ASSET,
-        DEFAULT_WALLPAPER,
-        dry_run=dry_run
-    )
+    run_cmd("cp", DEFAULT_WALLPAPER_ASSET, DEFAULT_WALLPAPER, dry_run=dry_run)
 
     log.debug("Run the pywal")
-    run_cmd(
-        "wal",
-        "-n",
-        "-s",
-        "-t",
-        "-e",
-        "-i",
-        DEFAULT_WALLPAPER,
-        dry_run=dry_run
-    )
+    run_cmd("wal", "-n", "-s", "-t", "-e", "-i", DEFAULT_WALLPAPER, dry_run=dry_run)
 
     log.debug("Link the color to eww")
     run_cmd(
@@ -424,7 +450,7 @@ def configure_pywal(dry_run: bool = True) -> None:
         "-s",
         f"{PYWAL_CACHE_DIR}/color.scss",
         "eww/.config/eww/scss/wal.scss",
-        dry_run=dry_run
+        dry_run=dry_run,
     )
 
     log.debug("Link the color to waybar")
@@ -433,7 +459,7 @@ def configure_pywal(dry_run: bool = True) -> None:
         "-s",
         f"{PYWAL_CACHE_DIR}/color.css",
         "waybar/.config/waybar/wal.scss",
-        dry_run=dry_run
+        dry_run=dry_run,
     )
 
 
@@ -477,15 +503,17 @@ def main(dry_run: bool = True):
 
     finish: datetime = datetime.now()
 
-    log.info(
-        f"""Script Finished:
+    log.info(f"""Script Finished:
     Started at {start}
     Finished at {finish}
-    Total time: {finish-start}"""
+    Total time: {finish-start}""")
+    log.info(
+        f"{COLORS.GREEN}>>> Installation completed successfully! <<<{COLORS.RESET}"
     )
-    log.info(f"{COLORS.GREEN}>>> Installation completed successfully! <<<{COLORS.RESET}")
 
-    custom_print("\n>>> Type 'start-hyprland' to initilize the Hyprland. (reboot is recomended)")
+    custom_print(
+        "\n>>> Type 'start-hyprland' to initilize the Hyprland. (reboot is recomended)"
+    )
     exit(0)
 
 
@@ -496,7 +524,9 @@ def parse_args(args: list) -> None:
     # test number of arguments
     if len(args) != 2 and len(args) != 3:
         print(args)
-        custom_print("Bad usage: Exactly one or two arguments are required.", color=COLORS.RED)
+        custom_print(
+            "Bad usage: Exactly one or two arguments are required.", color=COLORS.RED
+        )
         show_help()
         exit(3)
 
@@ -511,24 +541,20 @@ def parse_args(args: list) -> None:
     for arg in args[1:]:
         if arg == "--dry-run":
             if dry_run is None:
-                print(
-                    f"""{COLORS.YELLOW}
+                print(f"""{COLORS.YELLOW}
 ######################################################
 >>> Dry-run mode enabled. No changes will be made. <<<
 ######################################################
-{COLORS.RESET}"""
-                )
+{COLORS.RESET}""")
                 dry_run = True
 
         elif arg == "--run":
             if dry_run is None:
-                print(
-                    f"""{COLORS.YELLOW}
+                print(f"""{COLORS.YELLOW}
 ###################################################
 >>> Run mode enabled. All changes will be made. <<<
 ###################################################
-{COLORS.RESET}"""
-                )
+{COLORS.RESET}""")
                 dry_run = False
 
         elif (arg == "-d") or (arg == "--debug"):
@@ -552,8 +578,7 @@ def parse_args(args: list) -> None:
     # file handler to save the LOG_FILE
     fh: logging.FileHandler = logging.FileHandler(LOG_FILE)
     formatter: logging.Formatter = logging.Formatter(
-        "[%(asctime)s] [%(levelname)7s] - %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S"
+        "[%(asctime)s] [%(levelname)7s] - %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
     )
     fh.setFormatter(formatter)
     fh.setLevel(log_level)
